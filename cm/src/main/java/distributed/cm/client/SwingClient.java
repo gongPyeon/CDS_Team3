@@ -1,6 +1,5 @@
 package distributed.cm.client;
 
-import jakarta.websocket.EncodeException;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;
@@ -31,8 +30,6 @@ public class SwingClient {
             frame.setLocationRelativeTo(null);
             frame.setVisible(true);
         });
-
-        client.clientSocketComm.openSocket();
     }
     class DrawingPanel extends JPanel {
         private int lastX, lastY;
