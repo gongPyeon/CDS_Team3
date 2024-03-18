@@ -16,7 +16,7 @@ public class ClientSocket {
         WebSocketContainer container = ContainerProvider.getWebSocketContainer();
         try {
             session = container.connectToServer(ClientSocket.class, URI.create(uri));
-            log.info("open socket success!");
+            registerMessageHandler();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -28,6 +28,10 @@ public class ClientSocket {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void registerMessageHandler(){
+        session.addMessageHandler(String.class , new ClientSocketManager.MessageHandler());
     }
 }
 

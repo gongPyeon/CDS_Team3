@@ -1,5 +1,6 @@
 package distributed.cm.client;
 
+import ch.qos.logback.core.net.server.Client;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;
@@ -12,10 +13,10 @@ import java.io.IOException;
 
 @Slf4j
 public class SwingClient {
-    private final ClientSocketComm clientSocketComm;
+    private final ClientSocketManager clientSocketManager;
 
     public SwingClient() {
-        clientSocketComm = new ClientSocketComm();
+        clientSocketManager = new ClientSocketManager();
     }
 
     public static void main(String[] args) throws IOException {
@@ -65,7 +66,7 @@ public class SwingClient {
                     }
                     lastX = x;
                     lastY = y;
-                    clientSocketComm.draw(x, y);
+                    clientSocketManager.draw(x, y);
                 }
             });
 
@@ -120,4 +121,3 @@ public class SwingClient {
         PENCIL, ERASER
     }
 }
-
