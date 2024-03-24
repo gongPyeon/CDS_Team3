@@ -1,19 +1,19 @@
 package distributed.cm.client.msg;
 
-import distributed.cm.server.domain.TextBox;
+import distributed.cm.server.domain.Shape;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class TextBosMessage {
+public class RectangleMessage {
     private int messageType;
     private int drawType;
-    private TextBox textBox;
+    private Shape shape;
 
-    public TextBosMessage(int messageType, int drawType, TextBox textBox) {
+    public RectangleMessage(int messageType, int drawType, Shape shape) {
         this.messageType = messageType;
         this.drawType = drawType;
-        this.textBox = textBox;
+        this.shape = shape;
     }
 }
