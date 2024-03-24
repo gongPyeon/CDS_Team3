@@ -1,4 +1,11 @@
 package distributed.cm.server.domain;
 
-public class Square implements Shape{
+import lombok.Getter;
+
+@Getter
+public class Square extends Shape{
+
+    public Square(int x1, int y1, int x2, int y2, int bold, boolean isPaint, String color) {
+        super(x1, y1, x2, y2, bold, isPaint, color);
+    }
 }
