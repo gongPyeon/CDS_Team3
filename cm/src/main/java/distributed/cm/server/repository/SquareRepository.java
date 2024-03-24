@@ -4,8 +4,7 @@ import distributed.cm.server.domain.Shape;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class SquareRepository implements ShapeRepository{
-    @Override
+public class SquareRepository{
     public void save(Shape shape) {
 
     }
