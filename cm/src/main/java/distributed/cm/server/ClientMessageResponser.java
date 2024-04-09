@@ -11,9 +11,10 @@ import java.util.List;
 @Slf4j
 @Component
 public class ClientMessageResponser {
-    public void sendMessageAllSocket(String message, List<WebSocketSession> sessions) {
+    public void sendMessageAllSocket(String message, List<WebSocketSession> sessions, String exceptId) {
         for (WebSocketSession session : sessions) {
             try {
+                if(session.getId().equals(exceptId)) continue;
                 session.sendMessage(new TextMessage(message));
             } catch (IOException e) {
                 throw new RuntimeException(e);
