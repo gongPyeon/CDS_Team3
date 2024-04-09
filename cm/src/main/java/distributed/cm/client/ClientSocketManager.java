@@ -3,6 +3,7 @@ package distributed.cm.client;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import distributed.cm.client.msg.*;
+import distributed.cm.client.swing.SwingClient;
 import distributed.cm.server.domain.Line;
 import distributed.cm.server.domain.TextBox;
 import distributed.cm.server.parser.*;
@@ -87,7 +88,8 @@ public class ClientSocketManager {
          * 다른 유저의 draw 메세지 도착
          */
         public void onDrawMessage(DrawMessage message) {
-
+            SwingClient client = SwingClient.getClient();
+            client.panelDraw(message.getDraw());
         }
     }
 

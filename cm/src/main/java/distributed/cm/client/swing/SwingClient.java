@@ -2,7 +2,7 @@ package distributed.cm.client.swing;
 
 import ch.qos.logback.core.net.server.Client;
 import distributed.cm.client.ClientSocketManager;
-import distributed.cm.server.domain.Draw;
+import distributed.cm.server.domain.*;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;
@@ -14,20 +14,30 @@ import java.util.ArrayList;
 
 @Slf4j
 public class SwingClient {
-    private final ClientSocketManager clientSocketManager;
+    private static ClientSocketManager clientSocketManager;
+    private static SwingClient client = new SwingClient();
+    public DrawingPanel drawingPanel = new DrawingPanel();
 
-    public SwingClient() {
+    private SwingClient() {
         clientSocketManager = new ClientSocketManager();
     }
 
+    public static SwingClient getClient() {
+        return client;
+    }
+
+    public void panelDraw(Draw draw){
+        drawingPanel.receivedMessage(draw);
+    }
+
     public static void main(String[] args) throws IOException {
-        SwingClient client = new SwingClient();
-        String title = client.nameSetting();
+        SwingClient swingClient = SwingClient.getClient();
+        String title = swingClient.nameSetting();
         //swing 실행
         SwingUtilities.invokeLater(() -> {
             JFrame frame = new JFrame("title");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.getContentPane().add(client.new DrawingPanel());
+            frame.getContentPane().add(swingClient.drawingPanel);
             frame.pack();
             frame.setLocationRelativeTo(null);
             frame.setVisible(true);
@@ -246,18 +256,18 @@ public class SwingClient {
         }
 
         public void receivedMessage(Draw draw){
-            if(draw instanceof SwingPencil){
-                SwingPencil pen = (SwingPencil) draw;
-                shapes.add(pen);
-            }else if(draw instanceof SwingCircle){
-                SwingCircle cir = (SwingCircle) draw;
-                shapes.add(cir);
-            }else if(draw instanceof SwingRectangle){
-                SwingRectangle rec = (SwingRectangle) draw;
-                shapes.add(rec);
-            }else if(draw instanceof SwingText){
-                SwingText text = (SwingText) draw;
-                shapes.add(text);
+            if(draw instanceof Line){
+                Line line = (Line) draw;
+                shapes.add(new SwingPencil(line.getX1(), line.getY1(), line.getX2(), line.getY2()));
+            }else if(draw instanceof Circle){
+                Circle cir = (Circle) draw;
+                shapes.add(new SwingCircle(cir.getX1(), cir.getY1(), cir.getX2(), cir.getY2()));
+            }else if(draw instanceof Square){
+                Square square = (Square) draw;
+                shapes.add(new SwingRectangle(square.getX1(), square.getY1(), square.getX2(), square.getY2()));
+            }else if(draw instanceof TextBox){
+                TextBox text = (TextBox) draw;
+                shapes.add(new SwingText(text.getX1(), text.getY1()));
             }
             repaint();
         }
