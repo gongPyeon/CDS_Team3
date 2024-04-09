@@ -7,6 +7,9 @@ import distributed.cm.server.domain.Line;
 import distributed.cm.server.domain.TextBox;
 import distributed.cm.server.parser.*;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.web.socket.WebSocketSession;
 
 @Slf4j
 public class ClientSocketManager {
@@ -86,7 +89,6 @@ public class ClientSocketManager {
         public void onDrawMessage(DrawMessage message) {
 
         }
-
     }
 
 }

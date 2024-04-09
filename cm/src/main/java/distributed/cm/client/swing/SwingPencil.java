@@ -17,7 +17,7 @@ public class SwingPencil extends SwingShape{
 
     public void draw(Graphics g){
         g.drawLine(startX, startY, currX, currY);
-        g.dispose();
+        //g.dispose();
         startX = currX;
         startY = currY;
     }
