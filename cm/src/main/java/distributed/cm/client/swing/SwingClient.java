@@ -2,6 +2,7 @@ package distributed.cm.client.swing;
 
 import ch.qos.logback.core.net.server.Client;
 import distributed.cm.client.ClientSocketManager;
+import distributed.cm.server.domain.Draw;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;
@@ -24,7 +25,7 @@ public class SwingClient {
         String title = client.nameSetting();
         //swing 실행
         SwingUtilities.invokeLater(() -> {
-            JFrame frame = new JFrame(title);
+            JFrame frame = new JFrame("title");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.getContentPane().add(client.new DrawingPanel());
             frame.pack();
@@ -54,13 +55,13 @@ public class SwingClient {
                     if(drawingMode == DrawingMode.TEXTBOX){ // text인 경우 팝업을 통해 입력받고 그린다
                         SwingText text = new SwingText(startX, startY);
                         Graphics g = getGraphics();
-                        text.draw(g);
+                        text.drawing(g);
                         shapes.add(text);
 
                         clientSocketManager.text(text.getInput(), startX, startY);
                     }
 
-                    if(shapes != null){
+                    if(!shapes.isEmpty()){
                         for (int i = 0; i < shapes.size(); i++) {
                             SwingShape shape = shapes.get(i);
                             if (shape.contains(e.getX(), e.getY())) {
@@ -124,6 +125,7 @@ public class SwingClient {
             pencilButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
+                    allowColorButton = false;
                     drawingMode = DrawingMode.PENCIL;
                 }
             });
@@ -144,10 +146,17 @@ public class SwingClient {
             textButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
+
+                    allowColorButton = false;
                     drawingMode = DrawingMode.TEXTBOX;
                 }
             });
-            
+
+            add(pencilButton); // 버튼을 패널에 부착한다
+            add(RecButton);
+            add(cirButton);
+            add(textButton);
+
             //도형 수정
             JButton fullcolorButton = new JButton("FullColor");
             fullcolorButton.addActionListener(new ActionListener() {
@@ -196,13 +205,11 @@ public class SwingClient {
                 }
             });
 
-            add(pencilButton); // 버튼을 패널에 부착한다
-            add(RecButton);
-            add(cirButton);
-            add(textButton);
+
             add(fullcolorButton);
             add(linecolorButton);
             add(boldButton);
+
         }
 
         private int currentlineWidth = 1;
@@ -211,11 +218,16 @@ public class SwingClient {
         @Override
         protected void paintComponent(Graphics g) { // error
             super.paintComponent(g);
-            for (SwingShape shape : shapes) {
-                shape.draw(g);
+
+            if(shapes.size() == 0) return;
+            else{
+                for (SwingShape shape : shapes) {
+                    shape.draw(g);
+                }
             }
 
             SwingShape parent = shapes.get(shapeIndex);
+
             if(parent instanceof SwingCircle){
                 SwingCircle cir = (SwingCircle) parent;
                 cir.setLineWidth(currentlineWidth);
@@ -228,13 +240,24 @@ public class SwingClient {
                 rec.setFillColor(currentFillColor);
                 rec.setLineColor(currentLineColor);
                 rec.draw(g);
-            }else if(parent instanceof  SwingText){
-//                SwingText text = (SwingText) parent;
-//                text.setLineColor(currentColor);
-//                text.drawColor(g);
-            }else if(parent instanceof  SwingPencil){
-                //g.drawLine(50, 50, 200, 50); 펜은 색을 수정할 수 없다 (선으로 변경하면 색 수정가능)
-            }// pencil
+            }
+        }
+
+        public void receivedMessage(Draw draw){
+            if(draw instanceof SwingPencil){
+                SwingPencil pen = (SwingPencil) draw;
+                shapes.add(pen);
+            }else if(draw instanceof SwingCircle){
+                SwingCircle cir = (SwingCircle) draw;
+                shapes.add(cir);
+            }else if(draw instanceof SwingRectangle){
+                SwingRectangle rec = (SwingRectangle) draw;
+                shapes.add(rec);
+            }else if(draw instanceof SwingText){
+                SwingText text = (SwingText) draw;
+                shapes.add(text);
+            }
+            repaint();
         }
 
     }

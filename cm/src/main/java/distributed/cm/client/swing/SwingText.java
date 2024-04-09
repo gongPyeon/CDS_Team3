@@ -23,6 +23,10 @@ public class SwingText extends SwingShape{
     }
 
     public void draw(Graphics g){
+        g.drawString(input, startX, startY);
+    }
+
+    public void drawing(Graphics g){
         while (true) {
             input = JOptionPane.showInputDialog("텍스트 입력 :"); //null X 눌렀을 때 등등 처리
             if (input != null) { // OK를 눌렀을 때
