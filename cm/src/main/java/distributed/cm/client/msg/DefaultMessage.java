@@ -6,14 +6,13 @@ import lombok.Setter;
 
 @Getter
 @Setter
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class DefaultMessage implements Message{
     private int messageType;
 
     private int entry;
 
-    @JsonIgnoreProperties(ignoreUnknown = true)
     private int drawType;
 
-    @JsonIgnoreProperties(ignoreUnknown = true)
     private String userId;
 }

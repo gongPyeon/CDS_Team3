@@ -22,5 +22,6 @@ public class Line implements Draw{
         this.color = color;
     }
 
-
+    public Line() {
+    }
 }

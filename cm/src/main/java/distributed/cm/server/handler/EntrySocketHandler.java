@@ -33,8 +33,5 @@ public class EntrySocketHandler {
 
     public void closeSocketHandle(String sessionId, WebSocketSession session) throws IOException {
         sessionRepository.removeSession(sessionId);
-
-        String message = clientResponseParser.createCloseSocketMessage(sessionId);
-        clientMessageResponser.sendMessageSocket(message, session);
     }
 }

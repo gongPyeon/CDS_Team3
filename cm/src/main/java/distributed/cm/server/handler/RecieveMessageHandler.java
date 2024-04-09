@@ -35,7 +35,7 @@ public class RecieveMessageHandler {
 
         //응답 메세지
         List<WebSocketSession> sessions = sessionRepository.findAllSessions();
-        clientMessageResponser.sendMessageAllSocket(payload, sessions);
+        clientMessageResponser.sendMessageAllSocket(payload, sessions, sessionId);
 
         if (message instanceof DefaultMessage) {
             userEntryHandle(sessionId, (DefaultMessage) message);
