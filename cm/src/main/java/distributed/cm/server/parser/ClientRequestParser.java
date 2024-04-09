@@ -31,12 +31,12 @@ public class ClientRequestParser {
     }
 
     private void initialMap(){
-        parserMap.put(0, lineMessageParser);
-        parserMap.put(1, circleMessageParser);
+        parserMap.put(1, lineMessageParser);
         parserMap.put(2, circleMessageParser);
-        parserMap.put(3, rectangleMassageParser);
+        parserMap.put(3, circleMessageParser);
         parserMap.put(4, rectangleMassageParser);
-        parserMap.put(5, textBoxMessageParser);
+        parserMap.put(5, rectangleMassageParser);
+        parserMap.put(6, textBoxMessageParser);
     }
 
     public Message parse(String payload) throws JsonProcessingException {

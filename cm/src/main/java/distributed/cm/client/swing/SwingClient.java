@@ -210,6 +210,8 @@ public class SwingClient {
         private Color currentLineColor = Color.black;
         @Override
         protected void paintComponent(Graphics g) { // error
+            if(shapes.size() == 0) return;
+
             super.paintComponent(g);
             for (SwingShape shape : shapes) {
                 shape.draw(g);

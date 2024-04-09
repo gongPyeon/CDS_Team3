@@ -10,4 +10,13 @@ public class LineMessage implements DrawMessage{
     private int messageType;
     private int drawType;
     private Line draw;
+
+    public LineMessage() {
+    }
+
+    public LineMessage(int messageType, int drawType, Line draw) {
+        this.messageType = messageType;
+        this.drawType = drawType;
+        this.draw = draw;
+    }
 }
