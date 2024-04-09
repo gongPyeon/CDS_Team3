@@ -4,7 +4,7 @@ package distributed.cm.server.domain;
 import lombok.Getter;
 
 @Getter
-public class Line {
+public class Line implements Draw{
 
     private int x1;
     private int y1;

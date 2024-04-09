@@ -1,6 +1,5 @@
 package distributed.cm.server.handler;
 
-import distributed.cm.server.BoardManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -9,6 +8,9 @@ import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.WebSocketMessage;
 import org.springframework.web.socket.WebSocketSession;
 
+import java.io.IOException;
+
+@Component
 @Slf4j
 @RequiredArgsConstructor
 public class SocketHandler implements WebSocketHandler {
@@ -17,31 +19,40 @@ public class SocketHandler implements WebSocketHandler {
     private final RecieveMessageHandler recieveMessageHandler;
 
     @Override
-    public void afterConnectionEstablished(WebSocketSession session) throws Exception {
+    public void afterConnectionEstablished(WebSocketSession session){
         log.info("Socket connection success! (sessionId = {})", session.getId());
-        entrySocketHandler.openSocket(session.getId(), session);
+        try {
+            entrySocketHandler.openSocketHandle(session.getId(), session);
+        } catch (IOException e) {
+            log.error("<{}> {}", session.getId(), e);
+        }
     }
 
     @Override
-    public void handleMessage(WebSocketSession session, WebSocketMessage<?> message) throws Exception {
-        log.info("<{}> {}", session.getId(), message.getPayload().toString());
-        recieveMessageHandler.recieveMessage(session.getId(), message.getPayload().toString());
+    public void handleMessage(WebSocketSession session, WebSocketMessage<?> message){
+        try {
+            recieveMessageHandler.handle(session.getId(), message.getPayload().toString());
+        } catch (IOException e) {
+            log.error("<{}> {}", session.getId(), e);
+        }
     }
 
     @Override
-    public void handleTransportError(WebSocketSession session, Throwable exception) throws Exception {
-        log.info("SocketHandler.handleTransportError");
+    public void handleTransportError(WebSocketSession session, Throwable exception) {
     }
 
     @Override
-    public void afterConnectionClosed(WebSocketSession session, CloseStatus closeStatus) throws Exception {
+    public void afterConnectionClosed(WebSocketSession session, CloseStatus closeStatus) {
         log.info("Socket connection closed! (sessionId = {})", session.getId());
-        entrySocketHandler.closeSocket(session.getId());
+        try{
+            entrySocketHandler.closeSocketHandle(session.getId(), session);
+        } catch (IOException e) {
+            log.error("<{}> {}", session.getId(), e);
+        }
     }
 
     @Override
     public boolean supportsPartialMessages() {
-        log.info("SocketHandler.supportsPartialMessages");
         return false;
     }
 }

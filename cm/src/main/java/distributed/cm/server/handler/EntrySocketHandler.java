@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.WebSocketSession;
 
+import java.io.IOException;
 import java.util.List;
 
 @Slf4j
@@ -21,24 +22,19 @@ public class EntrySocketHandler {
     private final ClientResponseParser clientResponseParser;
     private final BoardManager boardManager;
 
-    public void openSocket(String sessionId, WebSocketSession session) {
+    public void openSocketHandle(String sessionId, WebSocketSession session) throws IOException {
         //세션
         sessionRepository.saveSession(sessionId, session);
 
         //응답 메세지
-        List<WebSocketSession> sessions = sessionRepository.findAllSessions();
         String message = clientResponseParser.createOpenSocketMessage(sessionId);
-        clientMessageResponser.sendMessageAllSocket(message, sessions);
-
-        //보드 불러오기
-        boardManager.loadBoard();
+        clientMessageResponser.sendMessageSocket(message, session);
     }
 
-    public void closeSocket(String sessionId){
+    public void closeSocketHandle(String sessionId, WebSocketSession session) throws IOException {
         sessionRepository.removeSession(sessionId);
 
-//        List<WebSocketSession> sessions = sessionRepository.findAllSessions();
-//        String message = clientResponseParser.createCloseSocketMessage(sessionId);
-//        clientMessageResponser.sendMessageAllSocket(message, sessions);
+        String message = clientResponseParser.createCloseSocketMessage(sessionId);
+        clientMessageResponser.sendMessageSocket(message, session);
     }
 }

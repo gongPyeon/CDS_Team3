@@ -25,4 +25,8 @@ public class SessionRepository {
     public List<WebSocketSession> findAllSessions(){
         return new ArrayList<WebSocketSession>(sessionStore.values());
     }
+
+    public WebSocketSession findSession(String sessionId){
+        return sessionStore.get(sessionId);
+    }
 }

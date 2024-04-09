@@ -1,12 +1,18 @@
 package distributed.cm.server.domain;
 
 import lombok.Getter;
+import lombok.Setter;
+
 
 @Getter
-public class Circle extends Shape{
+@Setter
+public class Circle implements Draw{
 
-    public Circle(int x1, int y1, int x2, int y2, int bold, boolean isPaint, String color) {
-        super(x1, y1, x2, y2, bold, isPaint, color);
-    }
+    private int x1, x2, y1, y2;
 
+    private int bold;
+    private String boldColor;
+
+    private int isPaint;
+    private String paintColor;
 }
