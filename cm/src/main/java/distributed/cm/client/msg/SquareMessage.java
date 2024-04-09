@@ -1,13 +1,13 @@
 package distributed.cm.client.msg;
 
-import distributed.cm.server.domain.Line;
+import distributed.cm.server.domain.Square;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class LineMessage implements DrawMessage{
+public class SquareMessage implements DrawMessage{
     private int messageType;
     private int drawType;
-    private Line draw;
+    private Square draw;
 }

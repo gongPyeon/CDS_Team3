@@ -7,6 +7,7 @@ import distributed.cm.server.handler.SocketHandler;
 import distributed.cm.server.parser.ClientRequestParser;
 import distributed.cm.server.parser.ClientResponseParser;
 import distributed.cm.server.repository.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -19,12 +20,15 @@ import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
 @Configuration
 @EnableWebSocket
 public class WebConfig implements WebSocketConfigurer {
+
+    @Autowired private WebSocketHandler socketHandler;
+
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(socketHandler(), "/board").setAllowedOrigins("*");
+        registry.addHandler(socketHandler, "/board").setAllowedOrigins("*");
     }
 
-    @Bean
+/*    @Bean
     public WebSocketHandler socketHandler(){
         return new SocketHandler(
                 new EntrySocketHandler(
@@ -48,5 +52,5 @@ public class WebConfig implements WebSocketConfigurer {
                                 new TextBoxRepository()
                         ))
         );
-    }
+    }*/
 }

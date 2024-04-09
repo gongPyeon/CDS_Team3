@@ -1,15 +1,36 @@
 package distributed.cm.server.parser;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import distributed.cm.server.domain.Draw;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+@Slf4j
 @Component
+@RequiredArgsConstructor
 public class ClientResponseParser {
 
-    public String createOpenSocketMessage(String sessionId){
-        return "Success Connection!";
+    private final ObjectMapper objectMapper;
+
+    public String createOpenSocketMessage(String sessionId) throws JsonProcessingException {
+        Map<String, String> message = Map.of("Message", "Success connection!", "sessionId", sessionId);
+        return objectMapper.writeValueAsString(message);
     }
 
-    public String createCloseSocketMessage(String sessionId){
-        return "";
+    public String createCloseSocketMessage(String sessionId) throws JsonProcessingException {
+        Map<String, String> message = Map.of("Message", "Close connection!", "sessionId", sessionId);
+        return objectMapper.writeValueAsString(message);
+    }
+
+    public String createAllDrawsMessage(Map<String, Object> draws) throws JsonProcessingException {
+        draws.put("messageType", 1);
+        draws.put("drawType", 0);
+        return objectMapper.writeValueAsString(draws);
     }
 }

@@ -20,4 +20,8 @@ public class ClientMessageResponser {
             }
         }
     }
+
+    public void sendMessageSocket(String message, WebSocketSession session) throws IOException {
+        session.sendMessage(new TextMessage(message));
+    }
 }
