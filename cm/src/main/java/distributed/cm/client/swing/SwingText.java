@@ -11,13 +11,14 @@ public class SwingText extends SwingShape{
     private int startX, startY;
     @Getter
     private String input;
-    @Setter
-    private Color lineColor; // 선의 색상
-    // 선의 굵기 설정
-    @Setter
-    private int lineWidth; // 선의 굵기
 
-    public SwingText(int startX, int startY) {
+    public SwingText(String input, int startX, int startY) {
+        this.input = input;
+        this.startX = startX;
+        this.startY = startY;
+    }
+
+    public SwingText(int startX, int startY){
         this.startX = startX;
         this.startY = startY;
     }
@@ -41,13 +42,6 @@ public class SwingText extends SwingShape{
             }
         }
         g.drawString(input, startX, startY);
-    }
-
-    public void drawColor(Graphics g){
-        Graphics2D g2d = (Graphics2D) g;
-        g2d.setColor(lineColor);
-        g2d.setStroke(new BasicStroke(lineWidth));
-
     }
 
     @Override

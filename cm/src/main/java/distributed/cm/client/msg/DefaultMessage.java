@@ -1,6 +1,7 @@
 package distributed.cm.client.msg;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import distributed.cm.server.domain.User;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,4 +16,10 @@ public class DefaultMessage implements Message{
     private int drawType;
 
     private String userId;
+
+    public DefaultMessage(int messageType, int entry, User user){
+        this.messageType = messageType;
+        this.entry = entry;
+        this.userId = user.getUserId(); //sessioin id??
+    }
 }

@@ -4,8 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import distributed.cm.client.msg.*;
 import distributed.cm.client.swing.SwingClient;
-import distributed.cm.server.domain.Line;
-import distributed.cm.server.domain.TextBox;
+import distributed.cm.server.domain.*;
 import distributed.cm.server.parser.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,8 +47,38 @@ public class ClientSocketManager {
         }
     }
 
-    public void shape(int startX, int startY, int endX, int endY){
-        clientSocket.sendMessage("drag:(" + startX + ", " + startY +", " + startY + ", " + endY+ ")");
+    public void rectangle(int x1, int x2, int y1, int y2, int bold, String boldColor, String paintColor){
+        Square square = new Square(x1, x2, y1, y2, bold, boldColor, paintColor);
+        SquareMessage squareMessage = new SquareMessage(1, 4, square);
+        try{
+            String message = mapper.writeValueAsString(squareMessage);
+            clientSocket.sendMessage(message);
+        }catch (JsonProcessingException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void circle(int x1, int x2, int y1, int y2, int bold, String boldColor, String paintColor){
+        Circle circle = new Circle(x1, x2, y1, y2, bold, boldColor, paintColor);
+        CircleMessage circleMessage = new CircleMessage(1, 2, circle);
+        try{
+            String message = mapper.writeValueAsString(circleMessage);
+            clientSocket.sendMessage(message);
+        }catch (JsonProcessingException e){
+            e.printStackTrace();
+        }
+
+    }
+
+    public void user(String usrId){
+        User user = new User("0", usrId); //session id?
+        DefaultMessage defaultMessage = new DefaultMessage(0, 0, user);
+        try{
+            String message = mapper.writeValueAsString(defaultMessage);
+            clientSocket.sendMessage(message);
+        }catch (JsonProcessingException e){
+            e.printStackTrace();
+        }
     }
 
     @Slf4j
@@ -81,7 +110,8 @@ public class ClientSocketManager {
          * 다른 유저 입퇴장
          */
         public void onDefaultMessage(DefaultMessage message) {
-
+            SwingClient client = SwingClient.getClient();
+            client.panelLogin(message.getUserId());
         }
 
         /**
