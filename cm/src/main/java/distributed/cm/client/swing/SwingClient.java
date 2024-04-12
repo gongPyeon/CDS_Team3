@@ -30,12 +30,16 @@ public class SwingClient {
         drawingPanel.receivedMessage(draw);
     }
 
+    public void panelLogin(String usrId){
+        drawingPanel.loginMessage(usrId);
+    }
+
     public static void main(String[] args) throws IOException {
         SwingClient swingClient = SwingClient.getClient();
         String title = swingClient.nameSetting();
         //swing 실행
         SwingUtilities.invokeLater(() -> {
-            JFrame frame = new JFrame("title");
+            JFrame frame = new JFrame(title);
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.getContentPane().add(swingClient.drawingPanel);
             frame.pack();
@@ -76,7 +80,7 @@ public class SwingClient {
                             SwingShape shape = shapes.get(i);
                             if (shape.contains(e.getX(), e.getY())) {
                                 shapeIndex = i;
-                                clientSocketManager.shape(i,i,i,i);
+                                //clientSocketManager.shape(i,i,i,i);
                                 break;
                             }
                         }
@@ -96,38 +100,45 @@ public class SwingClient {
                             rectangle.drawingResize();
                             rectangle.draw(g);
                             shapes.add(rectangle);
+                            clientSocketManager.rectangle(startX, startY, endX, endY, rectangle.getLineWidth(), rectangle.getLineColor(), rectangle.getFillColor());
 
                         }else if(drawingMode == DrawingMode.CIRCLE){
                             SwingCircle circle = new SwingCircle(startX, startY, endX, endY);
                             circle.drawingResize();
                             circle.draw(g);
                             shapes.add(circle);
-
+                            clientSocketManager.circle(startX, startY, endX, endY, circle.getLineWidth(), circle.getLineColor(), circle.getFillColor());
                         }
                         allowColorButton = true;
-                        clientSocketManager.shape(startX, startY, endX, endY);
-                    }
-
-                }
-            });
-
-
-            addMouseMotionListener(new MouseMotionAdapter() {
-                @Override
-                public void mouseDragged(MouseEvent e) {
-                    //드래그 했을때 drawing mode가 pencil일 경우 선을 그린다
-                    if(drawingMode == DrawingMode.PENCIL){
+                        
+                    }else if(drawingMode == DrawingMode.PENCIL){
                         Graphics g = getGraphics();
-                        SwingPencil pencil = new SwingPencil(startX, startY, e.getX(), e.getY());
+                        SwingPencil pencil = new SwingPencil(startX, startY, endX, endY);
                         pencil.draw(g);
                         shapes.add(pencil);
-
-                        startX = pencil.getStartX();
-                        startY = pencil.getStartY();
-                        clientSocketManager.draw(startX, startY, e.getX(), e.getY());
+                        clientSocketManager.draw(startX, startY, endX, endY);
                     }
+
                 }
             });
+
+
+//            addMouseMotionListener(new MouseMotionAdapter() {
+//                @Override
+//                public void mouseDragged(MouseEvent e) {
+//                    //드래그 했을때 drawing mode가 pencil일 경우 선을 그린다
+//                    if(drawingMode == DrawingMode.PENCIL){
+//                        Graphics g = getGraphics();
+//                        SwingPencil pencil = new SwingPencil(startX, startY, e.getX(), e.getY());
+//                        pencil.draw(g);
+//                        shapes.add(pencil);
+//
+//                        startX = pencil.getStartX();
+//                        startY = pencil.getStartY();
+//                        clientSocketManager.draw(startX, startY, e.getX(), e.getY());
+//                    }
+//                }
+//            });
             
             //버튼
 
@@ -175,8 +186,10 @@ public class SwingClient {
                     if(allowColorButton){
                         Color newColor = JColorChooser.showDialog(fullcolorButton, "Choose full Color", fullcolorButton.getBackground());
                         if (newColor != null) {
-                            currentFillColor = newColor;
-                            repaint();
+                            String hexCode = String.format("#%02X%02X%02X", newColor.getRed(), newColor.getGreen(), newColor.getBlue());
+                            currentFillColor = hexCode;
+                            Graphics g = getGraphics();
+                            setFill(g);
                         }
                     }
                 }
@@ -189,8 +202,10 @@ public class SwingClient {
                     if(allowColorButton){
                         Color newColor = JColorChooser.showDialog(linecolorButton, "Choose line Color", linecolorButton.getBackground());
                         if (newColor != null) {
-                            currentLineColor = newColor;
-                            repaint();
+                            String hexCode = String.format("#%02X%02X%02X", newColor.getRed(), newColor.getGreen(), newColor.getBlue());
+                            currentLineColor = hexCode;
+                            Graphics g = getGraphics();
+                            setLine(g);
                         }
                     }
                 }
@@ -207,6 +222,8 @@ public class SwingClient {
                             try {
                                 int lineWidth = Integer.parseInt(input);
                                 currentlineWidth = lineWidth;
+                                Graphics g = getGraphics();
+                                setWidth(g);
                             } catch (NumberFormatException ex) {
                                 JOptionPane.showMessageDialog(null, "Invalid input. Please enter a valid integer.", "Error", JOptionPane.ERROR_MESSAGE);
                             }
@@ -223,53 +240,89 @@ public class SwingClient {
         }
 
         private int currentlineWidth = 1;
-        private Color currentFillColor = Color.black;
-        private Color currentLineColor = Color.black;
+
+        private String currentFillColor = null;
+
+        private String currentLineColor = "#000000";
         @Override
         protected void paintComponent(Graphics g) { // error
-            if(shapes.size() == 0) return;
-
             super.paintComponent(g);
 
             if(shapes.size() == 0) return;
-            else{
+            else {
                 for (SwingShape shape : shapes) {
                     shape.draw(g);
                 }
             }
+        }
+
+        public void setLine(Graphics g){ // message 보내긴
 
             SwingShape parent = shapes.get(shapeIndex);
-
             if(parent instanceof SwingCircle){
                 SwingCircle cir = (SwingCircle) parent;
-                cir.setLineWidth(currentlineWidth);
-                cir.setFillColor(currentFillColor);
                 cir.setLineColor(currentLineColor);
+                clientSocketManager.circle(cir.getStartX(),cir.getEndX(),cir.getStartY(),cir.getEndY(),cir.getLineWidth(),cir.getLineColor(),cir.getFillColor());
                 cir.draw(g);
             }else if(parent instanceof SwingRectangle){
                 SwingRectangle rec = (SwingRectangle) parent;
-                rec.setLineWidth(currentlineWidth);
-                rec.setFillColor(currentFillColor);
                 rec.setLineColor(currentLineColor);
+                clientSocketManager.rectangle(rec.getStartX(),rec.getEndX(),rec.getStartY(),rec.getEndY(),rec.getLineWidth(),rec.getLineColor(),rec.getFillColor());
+                rec.draw(g);
+            }
+
+        }
+
+        public void setFill(Graphics g){
+            SwingShape parent = shapes.get(shapeIndex);
+            if(parent instanceof SwingCircle){
+                SwingCircle cir = (SwingCircle) parent;
+                cir.setFillColor(currentFillColor);
+                clientSocketManager.circle(cir.getStartX(),cir.getEndX(),cir.getStartY(),cir.getEndY(),cir.getLineWidth(),cir.getLineColor(),cir.getFillColor());
+                cir.draw(g);
+            }else if(parent instanceof SwingRectangle){
+                SwingRectangle rec = (SwingRectangle) parent;
+                rec.setFillColor(currentFillColor);
+                clientSocketManager.rectangle(rec.getStartX(),rec.getEndX(),rec.getStartY(),rec.getEndY(),rec.getLineWidth(),rec.getLineColor(),rec.getFillColor());
                 rec.draw(g);
             }
         }
 
-        public void receivedMessage(Draw draw){
+        public void setWidth(Graphics g){
+            SwingShape parent = shapes.get(shapeIndex);
+            if(parent instanceof SwingCircle){
+                SwingCircle cir = (SwingCircle) parent;
+                cir.setLineWidth(currentlineWidth);
+                clientSocketManager.circle(cir.getStartX(),cir.getEndX(),cir.getStartY(),cir.getEndY(),cir.getLineWidth(),cir.getLineColor(),cir.getFillColor());
+                cir.draw(g);
+            }else if(parent instanceof SwingRectangle){
+                SwingRectangle rec = (SwingRectangle) parent;
+                rec.setLineWidth(currentlineWidth);
+                clientSocketManager.rectangle(rec.getStartX(),rec.getEndX(),rec.getStartY(),rec.getEndY(),rec.getLineWidth(),rec.getLineColor(),rec.getFillColor());
+                rec.draw(g);
+            }
+        }
+
+        public void receivedMessage(Draw draw){ // draw로부터 domain을 얻어오기
             if(draw instanceof Line){
                 Line line = (Line) draw;
                 shapes.add(new SwingPencil(line.getX1(), line.getY1(), line.getX2(), line.getY2()));
             }else if(draw instanceof Circle){
                 Circle cir = (Circle) draw;
-                shapes.add(new SwingCircle(cir.getX1(), cir.getY1(), cir.getX2(), cir.getY2()));
+                shapes.add(new SwingCircle(cir.getX1(), cir.getY1(), cir.getX2(), cir.getY2(), cir.getBold(), cir.getBoldColor(), cir.getPaintColor()));
             }else if(draw instanceof Square){
                 Square square = (Square) draw;
-                shapes.add(new SwingRectangle(square.getX1(), square.getY1(), square.getX2(), square.getY2()));
+                shapes.add(new SwingRectangle(square.getX1(), square.getY1(), square.getX2(), square.getY2(), square.getBold(), square.getBoldColor(), square.getPaintColor()));
             }else if(draw instanceof TextBox){
                 TextBox text = (TextBox) draw;
-                shapes.add(new SwingText(text.getX1(), text.getY1()));
+                shapes.add(new SwingText(text.getText(), text.getX1(), text.getY1()));
             }
-            repaint();
+            Graphics g = getGraphics();
+            shapes.get(shapes.size()-1).draw(g);
+        }
+
+        public void loginMessage(String usrId){ //login
+            JOptionPane.showMessageDialog(null, usrId+"가 접속했습니다", "알림", JOptionPane.INFORMATION_MESSAGE);
         }
 
     }
@@ -291,6 +344,7 @@ public class SwingClient {
             }
 
         }
+        clientSocketManager.user(usrName);
         return usrName;
     }
 }

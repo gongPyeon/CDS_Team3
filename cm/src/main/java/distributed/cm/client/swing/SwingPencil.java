@@ -6,20 +6,17 @@ import java.awt.*;
 
 public class SwingPencil extends SwingShape{
     @Getter
-    private int startX, startY, currX, currY;
+    private int startX, startY, endX, endY;
 
-    public SwingPencil(int startX, int startY, int currX, int currY) {
+    public SwingPencil(int startX, int startY, int endX, int endY) {
         this.startX = startX;
         this.startY = startY;
-        this.currX = currX;
-        this.currY = currY;
+        this.endX = endX;
+        this.endY = endY;
     }
 
     public void draw(Graphics g){
-        g.drawLine(startX, startY, currX, currY);
-        //g.dispose();
-        startX = currX;
-        startY = currY;
+        g.drawLine(startX, startY, endX, endY);
     }
 
     @Override
