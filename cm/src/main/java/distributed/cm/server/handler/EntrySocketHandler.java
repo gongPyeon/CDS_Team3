@@ -25,10 +25,6 @@ public class EntrySocketHandler {
     public void openSocketHandle(String sessionId, WebSocketSession session) throws IOException {
         //세션
         sessionRepository.saveSession(sessionId, session);
-
-        //응답 메세지
-        String message = clientResponseParser.createOpenSocketMessage(sessionId);
-        clientMessageResponser.sendMessageSocket(message, session);
     }
 
     public void closeSocketHandle(String sessionId, WebSocketSession session) throws IOException {

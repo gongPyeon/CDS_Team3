@@ -11,6 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.WebSocketSession;
 
+import java.io.Serializable;
+import java.util.Map;
+
 @Slf4j
 public class ClientSocketManager {
     private final ClientSocket clientSocket;
@@ -71,10 +74,12 @@ public class ClientSocketManager {
     }
 
     public void user(String usrId){
-        User user = new User("0", usrId); //session id?
-        DefaultMessage defaultMessage = new DefaultMessage(0, 0, user);
+        /*User user = new User("0", usrId); //session id?
+        DefaultMessage defaultMessage = new DefaultMessage(0, 0);*/
+        Map<String, Object> userMessage = Map.of("messageType", 0, "entry", 0, "userId", usrId);
+//        defaultMessage.setUserId(user.getUserId());
         try{
-            String message = mapper.writeValueAsString(defaultMessage);
+            String message = mapper.writeValueAsString(userMessage);
             clientSocket.sendMessage(message);
         }catch (JsonProcessingException e){
             e.printStackTrace();
@@ -94,7 +99,7 @@ public class ClientSocketManager {
         @Override
         public void onMessage(String message) {
             try {
-                log.info("onMessage");
+                log.info("onMessage={}", message);
                 Message socketMessage = clientRequestParser.parse(message);
                 if (socketMessage instanceof DefaultMessage) {
                     onDefaultMessage((DefaultMessage) socketMessage);

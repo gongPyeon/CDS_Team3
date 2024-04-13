@@ -17,9 +17,11 @@ public class DefaultMessage implements Message{
 
     private String userId;
 
-    public DefaultMessage(int messageType, int entry, User user){
+    public DefaultMessage(int messageType, int entry){
         this.messageType = messageType;
         this.entry = entry;
-        this.userId = user.getUserId(); //sessioin id??
+    }
+
+    public DefaultMessage() {
     }
 }
