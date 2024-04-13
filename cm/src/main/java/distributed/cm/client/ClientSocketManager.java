@@ -76,10 +76,10 @@ public class ClientSocketManager {
     public void user(String usrId){
         /*User user = new User("0", usrId); //session id?
         DefaultMessage defaultMessage = new DefaultMessage(0, 0);*/
-        Map<String, Object> userMessage = Map.of("messageType", 0, "entry", 0, "userId", usrId);
+        UserEntryMessage userEntryMessage = new UserEntryMessage(0, 0, usrId);
 //        defaultMessage.setUserId(user.getUserId());
         try{
-            String message = mapper.writeValueAsString(userMessage);
+            String message = mapper.writeValueAsString(userEntryMessage);
             clientSocket.sendMessage(message);
         }catch (JsonProcessingException e){
             e.printStackTrace();
