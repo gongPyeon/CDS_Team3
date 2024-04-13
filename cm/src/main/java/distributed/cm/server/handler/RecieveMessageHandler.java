@@ -53,11 +53,14 @@ public class RecieveMessageHandler {
         User user = new User(sessionId, message.getUserId());
         userRepository.saveUser(sessionId, user);
 
-        Map<String, Object> draws = boardManager.loadBoard();
+        //TODO
+        /*Map<String, Object> draws = boardManager.loadBoard();
         String responseMessage = clientResponseParser.createAllDrawsMessage(draws);
 
         WebSocketSession userSession = sessionRepository.findSession(sessionId);
-        clientMessageResponser.sendMessageSocket(responseMessage, userSession);
+        clientMessageResponser.sendMessageSocket(responseMessage, userSession);*/
+
+
     }
 
     private void drawMessageHandle(DrawMessage message) {
