@@ -2,6 +2,7 @@ package distributed.cm.server.parser;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import distributed.cm.client.msg.UserEntryMessage;
 import distributed.cm.server.domain.Draw;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,9 +24,9 @@ public class ClientResponseParser {
         return objectMapper.writeValueAsString(message);
     }
 
-    public String createCloseSocketMessage(String sessionId) throws JsonProcessingException {
-        Map<String, String> message = Map.of("Message", "Close connection!", "sessionId", sessionId);
-        return objectMapper.writeValueAsString(message);
+    public String createCloseSocketMessage(String userId) throws JsonProcessingException {
+        UserEntryMessage userEntryMessage = new UserEntryMessage(0, 1, userId);
+        return objectMapper.writeValueAsString(userEntryMessage);
     }
 
     public String createAllDrawsMessage(Map<String, Object> draws) throws JsonProcessingException {

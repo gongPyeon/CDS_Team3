@@ -20,4 +20,7 @@ public class UserRepository {
     public void removeUser(String sessionId){
         sessionStore.remove(sessionId);
     }
+    public User findUserBySessionId(String sessionId){
+        return sessionStore.get(sessionId);
+    }
 }
