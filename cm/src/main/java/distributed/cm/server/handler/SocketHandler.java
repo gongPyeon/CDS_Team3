@@ -1,5 +1,6 @@
 package distributed.cm.server.handler;
 
+import distributed.cm.server.ClientMessageResponser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -17,6 +18,7 @@ public class SocketHandler implements WebSocketHandler {
 
     private final EntrySocketHandler entrySocketHandler;
     private final RecieveMessageHandler recieveMessageHandler;
+    private final ClientMessageResponser clientMessageResponser;
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session){
@@ -31,8 +33,8 @@ public class SocketHandler implements WebSocketHandler {
     @Override
     public void handleMessage(WebSocketSession session, WebSocketMessage<?> message){
         try {
-            recieveMessageHandler.handle(session.getId(), message.getPayload().toString());
-            log.info("{}", message.getPayload());
+            String returnMessage = recieveMessageHandler.handle(session.getId(), message.getPayload().toString());
+            clientMessageResponser.sendMessageAllSocket(returnMessage, session.getId());
         } catch (IOException e) {
             log.error("<{}> {}", session.getId(), e);
         }
@@ -46,7 +48,8 @@ public class SocketHandler implements WebSocketHandler {
     public void afterConnectionClosed(WebSocketSession session, CloseStatus closeStatus) {
         log.info("Socket connection closed! (sessionId = {})", session.getId());
         try{
-            entrySocketHandler.closeSocketHandle(session.getId(), session);
+            String returnMessage = entrySocketHandler.closeSocketHandle(session.getId());
+            clientMessageResponser.sendMessageAllSocket(returnMessage, session.getId());
         } catch (IOException e) {
             log.error("<{}> {}", session.getId(), e);
         }
