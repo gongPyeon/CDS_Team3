@@ -38,7 +38,7 @@ public class SwingText extends SwingShape{
                     break;
                 }
             } else { // 이외의 버튼을 눌렀을 때
-                System.exit(0);
+                return;
             }
         }
         g.drawString(input, startX, startY);

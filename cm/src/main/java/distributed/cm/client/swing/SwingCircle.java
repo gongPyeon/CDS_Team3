@@ -23,7 +23,7 @@ public class SwingCircle extends SwingShape{
     @Getter
     private String fillColor; // 내부 색상
 
-    public SwingCircle(int startX, int startY, int endX, int endY) {
+    public SwingCircle(int startX, int endX, int startY, int endY) {
         this.startX = startX;
         this.startY = startY;
         this.endX = endX;
@@ -35,7 +35,7 @@ public class SwingCircle extends SwingShape{
         this.fillColor = null;
     }
 
-    public SwingCircle(int startX, int startY, int endX, int endY, int bold, String boldColor, String paintColor) {
+    public SwingCircle(int startX, int endX, int startY, int endY, int bold, String boldColor, String paintColor) {
         this.startX = startX;
         this.startY = startY;
         this.endX = endX;
