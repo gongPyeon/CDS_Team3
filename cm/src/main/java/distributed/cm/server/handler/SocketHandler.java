@@ -32,6 +32,7 @@ public class SocketHandler implements WebSocketHandler {
     public void handleMessage(WebSocketSession session, WebSocketMessage<?> message){
         try {
             recieveMessageHandler.handle(session.getId(), message.getPayload().toString());
+            log.info("{}", message.getPayload());
         } catch (IOException e) {
             log.error("<{}> {}", session.getId(), e);
         }

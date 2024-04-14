@@ -312,11 +312,11 @@ public class SwingClient {
 
 
         public void loginMessage(String usrId){ //login
-            JOptionPane.showMessageDialog(null, usrId+"가 접속했습니다", "알림", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, usrId+"님이 접속했습니다.", "알림", JOptionPane.INFORMATION_MESSAGE);
         }
 
         public void logoutMessage(String usrId){
-            JOptionPane.showMessageDialog(null, usrId+"가 접속을 해제했습니다", "알림", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, usrId+"님이 접속을 해제했습니다.", "알림", JOptionPane.INFORMATION_MESSAGE);
         }
 
     }
