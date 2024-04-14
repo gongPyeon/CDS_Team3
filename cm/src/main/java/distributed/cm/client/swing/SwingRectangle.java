@@ -24,7 +24,7 @@ public class SwingRectangle extends SwingShape{
     @Getter
     private String fillColor; // 내부 색상
 
-    public SwingRectangle(int startX, int startY, int endX, int endY, int bold, String boldColor, String paintColor) {
+    public SwingRectangle(int startX, int endX, int startY, int endY, int bold, String boldColor, String paintColor) {
         this.startX = startX;
         this.startY = startY;
         this.endX = endX;
@@ -36,7 +36,7 @@ public class SwingRectangle extends SwingShape{
         this.fillColor = paintColor;
     }
 
-    public SwingRectangle(int startX, int startY, int endX, int endY) {
+    public SwingRectangle(int startX, int endX, int startY, int endY) {
         this.startX = startX;
         this.startY = startY;
         this.endX = endX;

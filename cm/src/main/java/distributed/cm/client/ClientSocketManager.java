@@ -73,13 +73,24 @@ public class ClientSocketManager {
 
     }
 
-    public void user(String usrId){
-        /*User user = new User("0", usrId); //session id?
+    public void userLogin(String usrId){
+        /*User user = new User("0", usrId);
         DefaultMessage defaultMessage = new DefaultMessage(0, 0);*/
         UserEntryMessage userEntryMessage = new UserEntryMessage(0, 0, usrId);
 //        defaultMessage.setUserId(user.getUserId());
         try{
             String message = mapper.writeValueAsString(userEntryMessage);
+            clientSocket.sendMessage(message);
+        }catch (JsonProcessingException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void userLogout(String usrId){
+        Map<String, Object> userMessage = Map.of("messageType", 0, "entry", 1, "userId", usrId);
+//        defaultMessage.setUserId(user.getUserId());
+        try{
+            String message = mapper.writeValueAsString(userMessage);
             clientSocket.sendMessage(message);
         }catch (JsonProcessingException e){
             e.printStackTrace();
@@ -116,7 +127,11 @@ public class ClientSocketManager {
          */
         public void onDefaultMessage(DefaultMessage message) {
             SwingClient client = SwingClient.getClient();
-            client.panelLogin(message.getUserId());
+            if(message.getEntry() == 0){
+                client.panelLogin(message.getUserId());
+            }else{
+                client.panelLogout(message.getUserId());
+            }
         }
 
         /**
