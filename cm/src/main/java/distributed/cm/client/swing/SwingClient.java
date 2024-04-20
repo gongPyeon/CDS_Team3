@@ -121,12 +121,14 @@ public class SwingClient {
                             shapes.add(circle);
                             clientSocketManager.circle(circle.getStartX(), circle.getEndX(), circle.getStartY(), circle.getEndY(),circle.getLineWidth(), circle.getLineColor(), circle.getFillColor());
                         }
+                        allowColorButton = false;
                     }else if(drawingMode == DrawingMode.PENCIL){
                         Graphics g = getGraphics();
                         SwingPencil pencil = new SwingPencil(startX, startY, endX, endY);
                         pencil.draw(g);
                         shapes.add(pencil);
                         clientSocketManager.draw(startX, startY, endX, endY);
+                        allowColorButton = false;
                     }
 
                 }
@@ -188,6 +190,7 @@ public class SwingClient {
                         }
                     }
                     drawingMode = DrawingMode.NULL;
+                    allowColorButton = false;
                 }
             });
 
@@ -205,6 +208,7 @@ public class SwingClient {
                         }
                     }
                     drawingMode = DrawingMode.NULL;
+                    allowColorButton = false;
                 }
             });
 
@@ -227,6 +231,7 @@ public class SwingClient {
                         }
                     }
                     drawingMode = DrawingMode.NULL;
+                    allowColorButton = false;
                 }
             });
 
