@@ -63,7 +63,7 @@ public class SwingClient {
         private int shapeIndex = 0;
         private int startX, startY, endX, endY; // 시작점, 끝점
         private int width, height;
-        private DrawingMode drawingMode; // drawingMode는 pen, rec, cir, text이 있다
+        private DrawingMode drawingMode; // drawingMode는 pen, rec, cir, text, null이 있다
         private boolean allowColorButton = false;
 
         public DrawingPanel(){
@@ -90,6 +90,9 @@ public class SwingClient {
                             SwingShape shape = shapes.get(i);
                             if (shape.contains(e.getX(), e.getY())) {
                                 shapeIndex = i;
+                                if(!(shape instanceof SwingText) && !(shape instanceof SwingPencil)){
+                                    allowColorButton = true;
+                                }
                                 break;
                             }
                         }
@@ -118,14 +121,14 @@ public class SwingClient {
                             shapes.add(circle);
                             clientSocketManager.circle(circle.getStartX(), circle.getEndX(), circle.getStartY(), circle.getEndY(),circle.getLineWidth(), circle.getLineColor(), circle.getFillColor());
                         }
-                        allowColorButton = true;
-                        
+                        allowColorButton = false;
                     }else if(drawingMode == DrawingMode.PENCIL){
                         Graphics g = getGraphics();
                         SwingPencil pencil = new SwingPencil(startX, startY, endX, endY);
                         pencil.draw(g);
                         shapes.add(pencil);
                         clientSocketManager.draw(startX, startY, endX, endY);
+                        allowColorButton = false;
                     }
 
                 }
@@ -135,7 +138,6 @@ public class SwingClient {
             pencilButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    allowColorButton = false;
                     drawingMode = DrawingMode.PENCIL;
                 }
             });
@@ -157,22 +159,28 @@ public class SwingClient {
                 @Override
                 public void actionPerformed(ActionEvent e) {
 
-                    allowColorButton = false;
                     drawingMode = DrawingMode.TEXTBOX;
                 }
+            });
+
+            JButton selectBtn = new JButton("Select");
+            selectBtn.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) { drawingMode = DrawingMode.SELLECT;}
             });
 
             add(pencilButton); // 버튼을 패널에 부착한다
             add(RecButton);
             add(cirButton);
             add(textButton);
+            add(selectBtn);
 
             //도형 수정
             JButton fullcolorButton = new JButton("FullColor");
             fullcolorButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    if(allowColorButton){
+                    if(drawingMode == DrawingMode.SELLECT && allowColorButton){
                         Color newColor = JColorChooser.showDialog(fullcolorButton, "Choose full Color", fullcolorButton.getBackground());
                         if (newColor != null) {
                             String hexCode = String.format("#%02X%02X%02X", newColor.getRed(), newColor.getGreen(), newColor.getBlue());
@@ -181,6 +189,8 @@ public class SwingClient {
                             setFill(g);
                         }
                     }
+                    drawingMode = DrawingMode.NULL;
+                    allowColorButton = false;
                 }
             });
 
@@ -188,7 +198,7 @@ public class SwingClient {
             linecolorButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    if(allowColorButton){
+                    if(drawingMode == DrawingMode.SELLECT && allowColorButton){
                         Color newColor = JColorChooser.showDialog(linecolorButton, "Choose line Color", linecolorButton.getBackground());
                         if (newColor != null) {
                             String hexCode = String.format("#%02X%02X%02X", newColor.getRed(), newColor.getGreen(), newColor.getBlue());
@@ -197,6 +207,8 @@ public class SwingClient {
                             setLine(g);
                         }
                     }
+                    drawingMode = DrawingMode.NULL;
+                    allowColorButton = false;
                 }
             });
 
@@ -205,7 +217,7 @@ public class SwingClient {
             boldButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    if(allowColorButton) {
+                    if(drawingMode == DrawingMode.SELLECT  && allowColorButton) {
                         String input = JOptionPane.showInputDialog(null, "Enter line width:", "Line Width", JOptionPane.PLAIN_MESSAGE);
                         if (input != null && !input.isEmpty()) {
                             try {
@@ -218,6 +230,8 @@ public class SwingClient {
                             }
                         }
                     }
+                    drawingMode = DrawingMode.NULL;
+                    allowColorButton = false;
                 }
             });
 
@@ -320,7 +334,7 @@ public class SwingClient {
         }
 
     }
-    enum DrawingMode {PENCIL, RECTANGLE, CIRCLE, TEXTBOX}
+    enum DrawingMode {PENCIL, RECTANGLE, CIRCLE, TEXTBOX, SELLECT, NULL}
 
     public String nameSetting() { // panel생성 전에 사용자 이름을 입력받는다
         String usrName = null;
