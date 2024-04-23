@@ -10,7 +10,6 @@ public class SquareMessage implements DrawMessage{
     private int messageType;
     private int drawType;
     private Square draw;
-    private Square editDraw;
 
     public SquareMessage() {
     }
