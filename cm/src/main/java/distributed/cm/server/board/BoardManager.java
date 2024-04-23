@@ -1,4 +1,4 @@
-package distributed.cm.server;
+package distributed.cm.server.board;
 
 import distributed.cm.server.domain.*;
 import distributed.cm.server.repository.*;

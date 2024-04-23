@@ -1,7 +1,7 @@
 package distributed.cm.server.handler;
 
 import distributed.cm.client.msg.*;
-import distributed.cm.server.BoardManager;
+import distributed.cm.server.board.BoardManager;
 import distributed.cm.server.domain.User;
 import distributed.cm.server.parser.ClientRequestParser;
 import distributed.cm.server.parser.ClientResponseParser;
