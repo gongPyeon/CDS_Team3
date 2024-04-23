@@ -309,14 +309,14 @@ public class SwingClient {
                 SwingCircle cir = (SwingCircle) parent;
                 cir.setLineColor(currentLineColor);
                 if(modify != true) {
-                    clientSocketManager.circleEdit(startX, cir.getEndX(), startY, cir.getEndY(), cir.getLineWidth(), cir.getLineColor(), cir.getFillColor());
+                    clientSocketManager.circleEdit(cir.getStartX(), startX, cir.getStartY(), startY, cir.getLineWidth(), cir.getLineColor(), cir.getFillColor());
                 }
                 cir.draw(g);
             }else if(parent instanceof SwingRectangle){
                 SwingRectangle rec = (SwingRectangle) parent;
                 rec.setLineColor(currentLineColor);
                 if(modify != true) {
-                    clientSocketManager.rectangleEdit(startX, rec.getEndX(), startY, rec.getEndY(), rec.getLineWidth(), rec.getLineColor(), rec.getFillColor());
+                    clientSocketManager.rectangleEdit(rec.getStartX(), startX, rec.getStartY(), startY, rec.getLineWidth(), rec.getLineColor(), rec.getFillColor());
                 }
                 rec.draw(g);
             }
@@ -330,14 +330,14 @@ public class SwingClient {
                 SwingCircle cir = (SwingCircle) parent;
                 cir.setFillColor(currentFillColor);
                 if(modify != true) {
-                    clientSocketManager.circleEdit(startX, cir.getEndX(), startY, cir.getEndY(), cir.getLineWidth(), cir.getLineColor(), cir.getFillColor());
+                    clientSocketManager.circleEdit(cir.getStartX(), startX, cir.getStartY(), startY, cir.getLineWidth(), cir.getLineColor(), cir.getFillColor());
                 } //현재 클릭된 값을 넘겨보자
                 cir.draw(g);
             }else if(parent instanceof SwingRectangle){
                 SwingRectangle rec = (SwingRectangle) parent;
                 rec.setFillColor(currentFillColor);
                 if(modify != true) {
-                    clientSocketManager.rectangleEdit(startX, rec.getEndX(), startY, rec.getEndY(), rec.getLineWidth(), rec.getLineColor(), rec.getFillColor());
+                    clientSocketManager.rectangleEdit(rec.getStartX(), startX, rec.getStartY(), startY, rec.getLineWidth(), rec.getLineColor(), rec.getFillColor());
                 } //현재 클릭된 값을 넘겨보자
                 rec.draw(g);
             }
@@ -351,13 +351,13 @@ public class SwingClient {
                 SwingCircle cir = (SwingCircle) parent;
                 cir.setLineWidth(currentlineWidth);
                 if(modify != true) {
-                    clientSocketManager.circleEdit(startX, cir.getEndX(), startY, cir.getEndY(), cir.getLineWidth(), cir.getLineColor(), cir.getFillColor());
+                    clientSocketManager.circleEdit(cir.getStartX(), startX, cir.getStartY(), startY, cir.getLineWidth(), cir.getLineColor(), cir.getFillColor());
                 }cir.draw(g);
             }else if(parent instanceof SwingRectangle){
                 SwingRectangle rec = (SwingRectangle) parent;
                 rec.setLineWidth(currentlineWidth);
                 if(modify != true) {
-                    clientSocketManager.rectangleEdit(startX, rec.getEndX(), startY, rec.getEndY(), rec.getLineWidth(), rec.getLineColor(), rec.getFillColor());
+                    clientSocketManager.rectangleEdit(rec.getStartX(), startX, rec.getStartY(), startY, rec.getLineWidth(), rec.getLineColor(), rec.getFillColor());
                 }
                 rec.draw(g);
             }
@@ -388,7 +388,7 @@ public class SwingClient {
 
             if(draw instanceof Circle){
                 Circle cir = (Circle) draw;
-                shapeFind(cir.getX1(), cir.getY1()); // 객체 찾기
+                shapeFind(cir.getX2(), cir.getY2()); // 객체 찾기
 
                 currentFillColor = cir.getPaintColor(); // 바뀐 사항들 가져오기
                 currentLineColor = cir.getBoldColor();
@@ -401,8 +401,8 @@ public class SwingClient {
 
             }else if(draw instanceof Square){
                 Square rec = (Square) draw;
-                shapeFind(rec.getX1(), rec.getY1());
-                logger.info("received x 값: {}, y 값: {}, index : {}", rec.getX1(), rec.getY1(), shapeIndex);
+                shapeFind(rec.getX2(), rec.getY2());
+                logger.info("received x 값: {}, y 값: {}, index : {}", rec.getX2(), rec.getY2(), shapeIndex);
                 currentFillColor = rec.getPaintColor(); // 바뀐 사항들 가져오기
                 currentLineColor = rec.getBoldColor();
                 currentlineWidth = rec.getBold();
