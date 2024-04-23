@@ -17,7 +17,7 @@ import java.io.IOException;
 public class SocketHandler implements WebSocketHandler {
 
     private final EntrySocketHandler entrySocketHandler;
-    private final RecieveMessageHandler recieveMessageHandler;
+    private final ReceiveMessageHandler receiveMessageHandler;
     private final ClientMessageResponser clientMessageResponser;
 
     @Override
@@ -33,7 +33,7 @@ public class SocketHandler implements WebSocketHandler {
     @Override
     public void handleMessage(WebSocketSession session, WebSocketMessage<?> message){
         try {
-            String returnMessage = recieveMessageHandler.handle(session.getId(), message.getPayload().toString());
+            String returnMessage = receiveMessageHandler.handle(session.getId(), message.getPayload().toString());
             clientMessageResponser.sendMessageAllSocket(returnMessage, session.getId());
         } catch (IOException e) {
             log.error("<{}> {}", session.getId(), e);
