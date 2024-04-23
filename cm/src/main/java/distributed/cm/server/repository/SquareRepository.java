@@ -20,7 +20,14 @@ public class SquareRepository implements DrawRepository{
 
     @Override
     public void updateDraw(Draw draw) {
-
+        Square editSquare = (Square) draw;
+        Square square = (Square) squareStore.get(new Point(editSquare.getX1(), editSquare.getY1()));
+        square.setX2(editSquare.getX2());
+        square.setY2(editSquare.getY2());
+        square.setBold(editSquare.getBold());
+        square.setBoldColor(editSquare.getBoldColor());
+        square.setIsPaint(editSquare.getIsPaint());
+        square.setPaintColor(editSquare.getPaintColor());
     }
 
     @Override

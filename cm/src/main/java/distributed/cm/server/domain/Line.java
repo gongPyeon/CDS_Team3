@@ -2,8 +2,10 @@ package distributed.cm.server.domain;
 
 
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 public class Line implements Draw{
 
     private int x1;
