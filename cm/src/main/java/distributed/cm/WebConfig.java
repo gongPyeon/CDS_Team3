@@ -16,30 +16,4 @@ public class WebConfig implements WebSocketConfigurer {
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
         registry.addHandler(socketHandler, "/board").setAllowedOrigins("*");
     }
-
-/*    @Bean
-    public WebSocketHandler socketHandler(){
-        return new SocketHandler(
-                new EntrySocketHandler(
-                        new SessionRepository(),
-                        new ClientMessageResponser(),
-                        new ClientResponseParser(),
-                        new BoardManager(
-                                new LineRepository(),
-                                new CircleRepository(),
-                                new SquareRepository(),
-                                new TextBoxRepository()
-                        )),
-                new RecieveMessageHandler(
-                        new SessionRepository(),
-                        new ClientRequestParser(),
-                        new ClientMessageResponser(),
-                        new BoardManager(
-                                new LineRepository(),
-                                new CircleRepository(),
-                                new SquareRepository(),
-                                new TextBoxRepository()
-                        ))
-        );
-    }*/
 }

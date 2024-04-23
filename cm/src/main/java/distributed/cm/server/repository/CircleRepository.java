@@ -3,11 +3,13 @@ package distributed.cm.server.repository;
 import distributed.cm.server.domain.Circle;
 import distributed.cm.server.domain.Draw;
 import distributed.cm.server.domain.Point;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
+@Slf4j
 @Repository
 public class CircleRepository implements DrawRepository{
 
@@ -30,6 +32,7 @@ public class CircleRepository implements DrawRepository{
         circle.setBoldColor(editCircle.getBoldColor());
         circle.setIsPaint(editCircle.getIsPaint());
         circle.setPaintColor(editCircle.getPaintColor());
+        log.info("updateDraw={}" , editCircle);
     }
 
     @Override

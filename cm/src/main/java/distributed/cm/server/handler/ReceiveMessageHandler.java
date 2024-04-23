@@ -4,7 +4,6 @@ import distributed.cm.client.msg.*;
 import distributed.cm.server.board.BoardManager;
 import distributed.cm.server.domain.User;
 import distributed.cm.server.parser.ClientRequestParser;
-import distributed.cm.server.parser.ClientResponseParser;
 import distributed.cm.server.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,10 +14,9 @@ import java.io.IOException;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class RecieveMessageHandler {
+public class ReceiveMessageHandler {
     private final UserRepository userRepository;
     private final ClientRequestParser clientRequestParser;
-    private final ClientResponseParser clientResponseParser;
 
     private final BoardManager boardManager;
     public String handle(String sessionId, String payload) throws IOException {
