@@ -50,17 +50,6 @@ public class ClientSocketManager {
         }
     }
 
-    public void rectangle(int x1, int x2, int y1, int y2, int bold, String boldColor, String paintColor){
-        Square square = new Square(x1, x2, y1, y2, bold, boldColor, paintColor);
-        SquareMessage squareMessage = new SquareMessage(1, 4, square);
-        try{
-            String message = mapper.writeValueAsString(squareMessage);
-            clientSocket.sendMessage(message);
-        }catch (JsonProcessingException e){
-            e.printStackTrace();
-        }
-    }
-
     public void circle(int x1, int x2, int y1, int y2, int bold, String boldColor, String paintColor){
         Circle circle = new Circle(x1, x2, y1, y2, bold, boldColor, paintColor);
         CircleMessage circleMessage = new CircleMessage(1, 2, circle);
@@ -72,6 +61,41 @@ public class ClientSocketManager {
         }
 
     }
+
+    public void circleEdit(int x1, int x2, int y1, int y2, int bold, String boldColor, String paintColor){
+        Circle circle = new Circle(x1, x2, y1, y2, bold, boldColor, paintColor);
+        CircleMessage circleMessage = new CircleMessage(1, 3, circle);
+        try{
+            String message = mapper.writeValueAsString(circleMessage);
+            clientSocket.sendMessage(message);
+        }catch (JsonProcessingException e){
+            e.printStackTrace();
+        }
+
+    }
+
+    public void rectangle(int x1, int x2, int y1, int y2, int bold, String boldColor, String paintColor){
+        Square square = new Square(x1, x2, y1, y2, bold, boldColor, paintColor);
+        SquareMessage squareMessage = new SquareMessage(1, 4, square);
+        try{
+            String message = mapper.writeValueAsString(squareMessage);
+            clientSocket.sendMessage(message);
+        }catch (JsonProcessingException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void rectangleEdit(int x1, int x2, int y1, int y2, int bold, String boldColor, String paintColor){
+        Square square = new Square(x1, x2, y1, y2, bold, boldColor, paintColor);
+        SquareMessage squareMessage = new SquareMessage(1, 5, square);
+        try{
+            String message = mapper.writeValueAsString(squareMessage);
+            clientSocket.sendMessage(message);
+        }catch (JsonProcessingException e){
+            e.printStackTrace();
+        }
+    }
+
 
     public void userLogin(String usrId){
         /*User user = new User("0", usrId);
@@ -139,7 +163,14 @@ public class ClientSocketManager {
          */
         public void onDrawMessage(DrawMessage message) {
             SwingClient client = SwingClient.getClient();
-            client.panelDraw(message.getDraw());
+            switch (message.getDrawType()){
+                case 1,2,4,6 :
+                    client.panelDraw(message.getDraw());
+                    break;
+                case 3,5 :
+                    client.panelEdit(message.getDraw());
+            }
+
         }
     }
 
