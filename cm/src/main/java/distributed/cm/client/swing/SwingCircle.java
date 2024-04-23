@@ -76,6 +76,7 @@ public class SwingCircle extends SwingShape{
         return mx >= startX && mx <= startX + width && my >= startY && my <= startY + height;
     }
 
+    @Override
     public void drawingResize(){
         int temp;
         if(startX > endX){
