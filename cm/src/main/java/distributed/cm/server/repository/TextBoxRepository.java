@@ -22,7 +22,11 @@ public class TextBoxRepository implements DrawRepository{
 
     @Override
     public void updateDraw(Draw draw) {
-
+        TextBox editTextBox = (TextBox) draw;
+        TextBox textBox = (TextBox) textBoxStore.get(new Point(editTextBox.getX1(), editTextBox.getY1()));
+        textBox.setText(editTextBox.getText());
+        textBox.setBold(editTextBox.getBold());
+        textBox.setFontColor(editTextBox.getFontColor());
     }
 
     @Override

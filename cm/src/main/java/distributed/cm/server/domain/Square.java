@@ -1,8 +1,10 @@
 package distributed.cm.server.domain;
 
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 public class Square implements Draw{
 
     private int x1, x2, y1, y2;

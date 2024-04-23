@@ -1,6 +1,5 @@
 package distributed.cm.server.repository;
 
-import distributed.cm.server.domain.Circle;
 import distributed.cm.server.domain.Draw;
 import distributed.cm.server.domain.Line;
 import distributed.cm.server.domain.Point;
@@ -23,6 +22,12 @@ public class LineRepository implements DrawRepository {
 
     @Override
     public void updateDraw(Draw draw) {
+        Line editLine = (Line) draw;
+        Line line = (Line) lineStore.get(new Point(editLine.getX1(), editLine.getY1()));
+        line.setX2(editLine.getX2());
+        line.setY2(editLine.getY2());
+        line.setBold(editLine.getBold());
+        line.setColor(editLine.getColor());
     }
 
     @Override
