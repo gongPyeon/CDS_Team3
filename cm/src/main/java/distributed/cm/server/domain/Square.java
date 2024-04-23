@@ -25,4 +25,12 @@ public class Square implements Draw{
         this.boldColor = boldColor;
         this.paintColor = paintColor;
     }
+
+    public Square(int startX, int startY, int bold, String boldColor, String paintColor){
+        this.x1 = startX;
+        this.y2 = startY;
+        this.bold = bold;
+        this.boldColor = boldColor;
+        this.paintColor = paintColor;
+    }
 }
