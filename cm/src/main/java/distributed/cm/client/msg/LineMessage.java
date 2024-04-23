@@ -10,6 +10,7 @@ public class LineMessage implements DrawMessage{
     private int messageType;
     private int drawType;
     private Line draw;
+    private Line editDraw;
 
     public LineMessage() {
     }
