@@ -30,6 +30,10 @@ public class SwingClient {
         drawingPanel.receivedMessage(draw);
     }
 
+    public void panelEdit(Draw draw){
+        drawingPanel.ModifyMessage(draw);
+    }
+
     public void panelLogin(String usrId){
         drawingPanel.loginMessage(usrId);
     }
@@ -179,7 +183,7 @@ public class SwingClient {
                             String hexCode = String.format("#%02X%02X%02X", newColor.getRed(), newColor.getGreen(), newColor.getBlue());
                             currentFillColor = hexCode;
                             Graphics g = getGraphics();
-                            setFill(g);
+                            setFill(g, false);
                         }
                     }
                     drawingMode = DrawingMode.NULL;
@@ -197,7 +201,7 @@ public class SwingClient {
                             String hexCode = String.format("#%02X%02X%02X", newColor.getRed(), newColor.getGreen(), newColor.getBlue());
                             currentLineColor = hexCode;
                             Graphics g = getGraphics();
-                            setLine(g);
+                            setLine(g, false);
                         }
                     }
                     drawingMode = DrawingMode.NULL;
@@ -217,7 +221,7 @@ public class SwingClient {
                                 int lineWidth = Integer.parseInt(input);
                                 currentlineWidth = lineWidth;
                                 Graphics g = getGraphics();
-                                setWidth(g);
+                                setWidth(g, false);
                             } catch (NumberFormatException ex) {
                                 JOptionPane.showMessageDialog(null, "Invalid input. Please enter a valid integer.", "Error", JOptionPane.ERROR_MESSAGE);
                             }
@@ -267,51 +271,64 @@ public class SwingClient {
             }
         }
 
-        public void setLine(Graphics g){ // message 보내긴
+        public void setLine(Graphics g, boolean modify){ // message 보내긴
 
             SwingShape parent = shapes.get(shapeIndex);
             if(parent instanceof SwingCircle){
                 SwingCircle cir = (SwingCircle) parent;
                 cir.setLineColor(currentLineColor);
-                clientSocketManager.circle(cir.getStartX(),cir.getEndX(),cir.getStartY(),cir.getEndY(),cir.getLineWidth(),cir.getLineColor(),cir.getFillColor());
+                if(modify != true) {
+                    clientSocketManager.circleEdit(cir.getStartX(), cir.getEndX(), cir.getStartY(), cir.getEndY(), cir.getLineWidth(), cir.getLineColor(), cir.getFillColor());
+                }
                 cir.draw(g);
             }else if(parent instanceof SwingRectangle){
                 SwingRectangle rec = (SwingRectangle) parent;
                 rec.setLineColor(currentLineColor);
-                clientSocketManager.rectangle(rec.getStartX(),rec.getEndX(),rec.getStartY(),rec.getEndY(),rec.getLineWidth(),rec.getLineColor(),rec.getFillColor());
+                if(modify != true) {
+                    clientSocketManager.rectangleEdit(rec.getStartX(), rec.getEndX(), rec.getStartY(), rec.getEndY(), rec.getLineWidth(), rec.getLineColor(), rec.getFillColor());
+                }
                 rec.draw(g);
             }
             repaint();
         }
 
-        public void setFill(Graphics g){
+        public void setFill(Graphics g, boolean modify){
+
             SwingShape parent = shapes.get(shapeIndex);
             if(parent instanceof SwingCircle){
                 SwingCircle cir = (SwingCircle) parent;
                 cir.setFillColor(currentFillColor);
-                clientSocketManager.circle(cir.getStartX(),cir.getEndX(),cir.getStartY(),cir.getEndY(),cir.getLineWidth(),cir.getLineColor(),cir.getFillColor());
+                if(modify != true) {
+                    clientSocketManager.circleEdit(cir.getStartX(), cir.getEndX(), cir.getStartY(), cir.getEndY(), cir.getLineWidth(), cir.getLineColor(), cir.getFillColor());
+                }
                 cir.draw(g);
             }else if(parent instanceof SwingRectangle){
                 SwingRectangle rec = (SwingRectangle) parent;
                 rec.setFillColor(currentFillColor);
-                clientSocketManager.rectangle(rec.getStartX(),rec.getEndX(), rec.getStartY(),rec.getEndY(),rec.getLineWidth(),rec.getLineColor(),rec.getFillColor());
+                if(modify != true) {
+                    clientSocketManager.rectangleEdit(rec.getStartX(), rec.getEndX(), rec.getStartY(), rec.getEndY(), rec.getLineWidth(), rec.getLineColor(), rec.getFillColor());
+                }
                 rec.draw(g);
             }
             repaint();
         }
 
-        public void setWidth(Graphics g){
+        public void setWidth(Graphics g, boolean modify){
+
             SwingShape parent = shapes.get(shapeIndex);
             if(parent instanceof SwingCircle){
                 SwingCircle cir = (SwingCircle) parent;
                 cir.setLineWidth(currentlineWidth);
-                clientSocketManager.circle(cir.getStartX(),cir.getEndX(),cir.getStartY(),cir.getEndY(),cir.getLineWidth(),cir.getLineColor(),cir.getFillColor());
-                cir.draw(g);
+                if(modify != true) {
+                    clientSocketManager.circleEdit(cir.getStartX(), cir.getEndX(), cir.getStartY(), cir.getEndY(), cir.getLineWidth(), cir.getLineColor(), cir.getFillColor());
+                }cir.draw(g);
             }else if(parent instanceof SwingRectangle){
                 SwingRectangle rec = (SwingRectangle) parent;
                 rec.setLineWidth(currentlineWidth);
-                clientSocketManager.rectangle(rec.getStartX(),rec.getEndX(),rec.getStartY(),rec.getEndY(),rec.getLineWidth(),rec.getLineColor(),rec.getFillColor());
-                rec.draw(g);
+                if(modify != true) {
+                    clientSocketManager.rectangleEdit(rec.getStartX(), rec.getEndX(), rec.getStartY(), rec.getEndY(), rec.getLineWidth(), rec.getLineColor(), rec.getFillColor());
+                    rec.draw(g);
+                }
             }
             repaint();
         }
@@ -338,11 +355,30 @@ public class SwingClient {
         public void ModifyMessage(Draw draw){
             if(draw instanceof Circle){
                 Circle cir = (Circle) draw;
-                shapeFind(cir.getX1(), cir.getY1());
+                shapeFind(cir.getX1(), cir.getY1()); // 객체 찾기
+
+                currentFillColor = cir.getPaintColor(); // 바뀐 사항들 가져오기
+                currentLineColor = cir.getBoldColor();
+                currentlineWidth = cir.getBold();
+
+                Graphics g = getGraphics();
+                setFill(g, true);
+                setLine(g, true);
+                setWidth(g, true);
 
             }else if(draw instanceof Square){
                 Square rec = (Square) draw;
                 shapeFind(rec.getX1(), rec.getY1());
+
+                currentFillColor = rec.getPaintColor(); // 바뀐 사항들 가져오기
+                currentLineColor = rec.getBoldColor();
+                currentlineWidth = rec.getBold();
+
+                Graphics g = getGraphics();
+                setFill(g, true);
+                setLine(g, true);
+                setWidth(g, true);
+
             }
         }
 
