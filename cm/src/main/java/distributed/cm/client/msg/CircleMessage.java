@@ -11,7 +11,6 @@ public class CircleMessage implements DrawMessage{
     private int messageType;
     private int drawType;
     private Circle draw;
-    private Circle editDraw;
 
     public CircleMessage() {
     }
