@@ -85,24 +85,17 @@ public class SwingClient {
                         }
                     }
 
-                    if(!shapes.isEmpty()){
-                        for (int i = 0; i < shapes.size(); i++) {
-                            SwingShape shape = shapes.get(i);
-                            if (shape.contains(e.getX(), e.getY())) {
-                                shapeIndex = i;
-                                if(!(shape instanceof SwingText) && !(shape instanceof SwingPencil)){
-                                    allowColorButton = true;
-                                }
-                                break;
-                            }
-                        }
-                    }
+                    shapeFind(startX, startY);
+
                 }
 
                 @Override
                 public void mouseReleased(MouseEvent e){ // 마우스를 뗐을때 drawing mode가 rec or cir일 경우 도형을 그린다
                     endX = e.getX();
                     endY = e.getY();
+
+                    if(endX == startX && endY == startY)
+                        return;
 
                     if(drawingMode == DrawingMode.RECTANGLE || drawingMode == DrawingMode.CIRCLE){
                         Graphics g = getGraphics();
@@ -259,6 +252,21 @@ public class SwingClient {
             }
         }
 
+        public void shapeFind(int sx, int sy){
+            if(!shapes.isEmpty()){
+                for (int i = 0; i < shapes.size(); i++) {
+                    SwingShape shape = shapes.get(i);
+                    if (shape.contains(sx, sy)) {
+                        shapeIndex = i;
+                        if(!(shape instanceof SwingText) && !(shape instanceof SwingPencil)){
+                            allowColorButton = true;
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+
         public void setLine(Graphics g){ // message 보내긴
 
             SwingShape parent = shapes.get(shapeIndex);
@@ -273,10 +281,10 @@ public class SwingClient {
                 clientSocketManager.rectangle(rec.getStartX(),rec.getEndX(),rec.getStartY(),rec.getEndY(),rec.getLineWidth(),rec.getLineColor(),rec.getFillColor());
                 rec.draw(g);
             }
-
+            repaint();
         }
 
-        public void setFill(Graphics g){ //순서가 이게 아닐텐데?
+        public void setFill(Graphics g){
             SwingShape parent = shapes.get(shapeIndex);
             if(parent instanceof SwingCircle){
                 SwingCircle cir = (SwingCircle) parent;
@@ -289,6 +297,7 @@ public class SwingClient {
                 clientSocketManager.rectangle(rec.getStartX(),rec.getEndX(), rec.getStartY(),rec.getEndY(),rec.getLineWidth(),rec.getLineColor(),rec.getFillColor());
                 rec.draw(g);
             }
+            repaint();
         }
 
         public void setWidth(Graphics g){
@@ -304,6 +313,7 @@ public class SwingClient {
                 clientSocketManager.rectangle(rec.getStartX(),rec.getEndX(),rec.getStartY(),rec.getEndY(),rec.getLineWidth(),rec.getLineColor(),rec.getFillColor());
                 rec.draw(g);
             }
+            repaint();
         }
 
         public void receivedMessage(Draw draw){ // draw로부터 domain을 얻어오기
@@ -314,14 +324,26 @@ public class SwingClient {
                 Circle cir = (Circle) draw;
                 shapes.add(new SwingCircle(cir.getX1(), cir.getX2(), cir.getY1(), cir.getY2(), cir.getBold(), cir.getBoldColor(), cir.getPaintColor()));
             }else if(draw instanceof Square){
-                Square square = (Square) draw;
-                shapes.add(new SwingRectangle(square.getX1(), square.getX2(), square.getY1(), square.getY2(), square.getBold(), square.getBoldColor(), square.getPaintColor()));
+                Square rec = (Square) draw;
+                shapes.add(new SwingRectangle(rec.getX1(), rec.getX2(), rec.getY1(), rec.getY2(), rec.getBold(), rec.getBoldColor(), rec.getPaintColor()));
             }else if(draw instanceof TextBox){
                 TextBox text = (TextBox) draw;
                 shapes.add(new SwingText(text.getText(), text.getX1(), text.getY1()));
             }
             Graphics g = getGraphics();
             shapes.get(shapes.size()-1).draw(g);
+            repaint();
+        }
+
+        public void ModifyMessage(Draw draw){
+            if(draw instanceof Circle){
+                Circle cir = (Circle) draw;
+                shapeFind(cir.getX1(), cir.getY1());
+
+            }else if(draw instanceof Square){
+                Square rec = (Square) draw;
+                shapeFind(rec.getX1(), rec.getY1());
+            }
         }
 
 
