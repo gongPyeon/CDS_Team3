@@ -18,7 +18,7 @@ public class ClientRequestParser {
     private final RectangleMassageParser rectangleMassageParser;
     private final TextBoxMessageParser textBoxMessageParser;
 
-    private final Map<Integer, DrawParser> parserMap = new HashMap<>();
+    private final Map<Integer, DrawParser> drawParserMap = new HashMap<>();
 
     public ClientRequestParser(ObjectMapper objectMapper, LineMessageParser lineMessageParser, CircleMessageParser circleMessageParser, RectangleMassageParser rectangleMassageParser, TextBoxMessageParser textBoxMessageParser) {
         this.objectMapper = objectMapper;
@@ -31,12 +31,12 @@ public class ClientRequestParser {
     }
 
     private void initialMap(){
-        parserMap.put(1, lineMessageParser);
-        parserMap.put(2, circleMessageParser);
-        parserMap.put(3, circleMessageParser);
-        parserMap.put(4, rectangleMassageParser);
-        parserMap.put(5, rectangleMassageParser);
-        parserMap.put(6, textBoxMessageParser);
+        drawParserMap.put(1, lineMessageParser);
+        drawParserMap.put(2, circleMessageParser);
+        drawParserMap.put(3, circleMessageParser);
+        drawParserMap.put(4, rectangleMassageParser);
+        drawParserMap.put(5, rectangleMassageParser);
+        drawParserMap.put(6, textBoxMessageParser);
     }
 
     public Message parse(String payload) throws JsonProcessingException {
@@ -44,7 +44,7 @@ public class ClientRequestParser {
 
         if(defaultMessage.getMessageType() == 0) return defaultMessage;
 
-        DrawParser drawParser = parserMap.get(defaultMessage.getDrawType());
+        DrawParser drawParser = drawParserMap.get(defaultMessage.getDrawType());
         return drawParser.parse(payload);
     }
 }

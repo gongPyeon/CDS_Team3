@@ -10,6 +10,7 @@ public class TextBoxMessage implements DrawMessage{
     private int messageType;
     private int drawType;
     private TextBox draw;
+    private TextBox editDraw;
 
     public TextBoxMessage() {
     }
