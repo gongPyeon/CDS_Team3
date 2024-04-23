@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class RectangleMassageParser implements DrawParser{
+public class SquareMassageParser implements DrawParser{
 
     private final ObjectMapper objectMapper;
 

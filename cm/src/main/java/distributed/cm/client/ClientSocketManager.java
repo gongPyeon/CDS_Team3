@@ -7,11 +7,7 @@ import distributed.cm.client.swing.SwingClient;
 import distributed.cm.server.domain.*;
 import distributed.cm.server.parser.*;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.web.socket.WebSocketSession;
 
-import java.io.Serializable;
 import java.util.Map;
 
 @Slf4j
@@ -104,7 +100,7 @@ public class ClientSocketManager {
                 objectMapper,
                 new LineMessageParser(objectMapper),
                 new CircleMessageParser(objectMapper),
-                new RectangleMassageParser(objectMapper),
+                new SquareMassageParser(objectMapper),
                 new TextBoxMessageParser(objectMapper));
 
         @Override

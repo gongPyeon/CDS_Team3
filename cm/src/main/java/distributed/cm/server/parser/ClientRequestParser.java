@@ -15,16 +15,16 @@ public class ClientRequestParser {
     private final ObjectMapper objectMapper;
     private final LineMessageParser lineMessageParser;
     private final CircleMessageParser circleMessageParser;
-    private final RectangleMassageParser rectangleMassageParser;
+    private final SquareMassageParser squareMassageParser;
     private final TextBoxMessageParser textBoxMessageParser;
 
     private final Map<Integer, DrawParser> drawParserMap = new HashMap<>();
 
-    public ClientRequestParser(ObjectMapper objectMapper, LineMessageParser lineMessageParser, CircleMessageParser circleMessageParser, RectangleMassageParser rectangleMassageParser, TextBoxMessageParser textBoxMessageParser) {
+    public ClientRequestParser(ObjectMapper objectMapper, LineMessageParser lineMessageParser, CircleMessageParser circleMessageParser, SquareMassageParser squareMassageParser, TextBoxMessageParser textBoxMessageParser) {
         this.objectMapper = objectMapper;
         this.lineMessageParser = lineMessageParser;
         this.circleMessageParser = circleMessageParser;
-        this.rectangleMassageParser = rectangleMassageParser;
+        this.squareMassageParser = squareMassageParser;
         this.textBoxMessageParser = textBoxMessageParser;
 
         initialMap();
@@ -34,8 +34,8 @@ public class ClientRequestParser {
         drawParserMap.put(1, lineMessageParser);
         drawParserMap.put(2, circleMessageParser);
         drawParserMap.put(3, circleMessageParser);
-        drawParserMap.put(4, rectangleMassageParser);
-        drawParserMap.put(5, rectangleMassageParser);
+        drawParserMap.put(4, squareMassageParser);
+        drawParserMap.put(5, squareMassageParser);
         drawParserMap.put(6, textBoxMessageParser);
     }
 
