@@ -1,6 +1,6 @@
-package distributed.cm.client.message;
+package distributed.cm.common.message;
 
-import distributed.cm.server.domain.Square;
+import distributed.cm.common.domain.Square;
 import lombok.Getter;
 import lombok.Setter;
 

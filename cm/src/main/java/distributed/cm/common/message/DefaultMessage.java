@@ -1,7 +1,7 @@
-package distributed.cm.client.message;
+package distributed.cm.common.message;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import distributed.cm.server.domain.User;
+import distributed.cm.common.domain.User;
 import lombok.Getter;
 import lombok.Setter;
 

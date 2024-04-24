@@ -1,7 +1,7 @@
 package distributed.cm.server.handler;
 
-import distributed.cm.server.domain.User;
-import distributed.cm.server.parser.ClientResponseParser;
+import distributed.cm.common.domain.User;
+import distributed.cm.common.parser.ClientResponseParser;
 import distributed.cm.server.repository.SessionRepository;
 import distributed.cm.server.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

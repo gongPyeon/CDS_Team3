@@ -1,9 +1,9 @@
-package distributed.cm.server.parser;
+package distributed.cm.common.parser;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import distributed.cm.client.message.DefaultMessage;
-import distributed.cm.client.message.Message;
+import distributed.cm.common.message.DefaultMessage;
+import distributed.cm.common.message.Message;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;

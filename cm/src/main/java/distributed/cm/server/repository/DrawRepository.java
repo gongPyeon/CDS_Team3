@@ -1,6 +1,6 @@
 package distributed.cm.server.repository;
 
-import distributed.cm.server.domain.Draw;
+import distributed.cm.common.domain.Draw;
 
 import java.util.List;
 

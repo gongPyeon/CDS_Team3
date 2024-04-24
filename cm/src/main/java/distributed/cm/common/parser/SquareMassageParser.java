@@ -1,9 +1,9 @@
-package distributed.cm.server.parser;
+package distributed.cm.common.parser;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import distributed.cm.client.message.Message;
-import distributed.cm.client.message.SquareMessage;
+import distributed.cm.common.message.Message;
+import distributed.cm.common.message.SquareMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

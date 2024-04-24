@@ -1,5 +1,6 @@
 package distributed.cm.server.board;
 
+import distributed.cm.common.domain.Draw;
 import distributed.cm.server.domain.*;
 import distributed.cm.server.repository.*;
 import lombok.extern.slf4j.Slf4j;

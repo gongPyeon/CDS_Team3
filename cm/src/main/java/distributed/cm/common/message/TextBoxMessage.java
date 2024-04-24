@@ -1,6 +1,6 @@
-package distributed.cm.client.message;
+package distributed.cm.common.message;
 
-import distributed.cm.server.domain.TextBox;
+import distributed.cm.common.domain.TextBox;
 import lombok.Getter;
 import lombok.Setter;
 
