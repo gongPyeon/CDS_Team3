@@ -27,7 +27,7 @@ public class LineRepository implements DrawRepository {
         line.setX2(editLine.getX2());
         line.setY2(editLine.getY2());
         line.setBold(editLine.getBold());
-        line.setColor(editLine.getColor());
+        line.setBoldColor(editLine.getBoldColor());
     }
 
     @Override
