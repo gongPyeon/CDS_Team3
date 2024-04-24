@@ -96,8 +96,6 @@ public class SwingClient {
                     }
 
                     shapeFind(startX, startY);
-                    logger.info("click index 값: {}", shapeIndex, shapeIndex);
-
                 }
 
                 @Override
@@ -116,14 +114,14 @@ public class SwingClient {
                             rectangle.drawingResize();
                             rectangle.draw(g);
                             shapes.add(rectangle);
-                            clientSocketManager.rectangle(rectangle.getStartX(), rectangle.getEndX(), rectangle.getStartY(), rectangle.getEndY(), rectangle.getLineWidth(), rectangle.getLineColor(), rectangle.getFillColor(), 4);
+                            clientSocketManager.rectangle(rectangle.getStartX(), rectangle.getEndX(), rectangle.getStartY(), rectangle.getEndY(), rectangle.getLineWidth(), rectangle.getLineColor(), rectangle.getFillColor());
 
                         }else if(drawingMode == DrawingMode.CIRCLE){
                             SwingCircle circle = new SwingCircle(startX, endX, startY, endY);
                             circle.drawingResize();
                             circle.draw(g);
                             shapes.add(circle);
-                            clientSocketManager.circle(circle.getStartX(), circle.getEndX(), circle.getStartY(), circle.getEndY(),circle.getLineWidth(), circle.getLineColor(), circle.getFillColor(), 2);
+                            clientSocketManager.circle(circle.getStartX(), circle.getEndX(), circle.getStartY(), circle.getEndY(),circle.getLineWidth(), circle.getLineColor(), circle.getFillColor());
                         }
                         allowColorButton = false;
                     }else if(drawingMode == DrawingMode.PENCIL){
@@ -278,7 +276,6 @@ public class SwingClient {
         @Override
         protected void paintComponent(Graphics g) { // error
             super.paintComponent(g);
-
             if(shapes.size() == 0) return;
             else {
                 for (SwingShape shape : shapes) {
@@ -302,8 +299,8 @@ public class SwingClient {
             }
         }
 
+        //TODO
         public void setLine(Graphics g, boolean modify){ // message 보내긴
-
             SwingShape parent = shapes.get(shapeIndex);
             if(parent instanceof SwingCircle){
                 SwingCircle cir = (SwingCircle) parent;
@@ -351,7 +348,7 @@ public class SwingClient {
         }
 
         public void setWidth(Graphics g, boolean modify){
-
+            log.info("set WIdth의 shapeIndex={}", shapeIndex);
             SwingShape parent = shapes.get(shapeIndex);
             if(parent instanceof SwingCircle){
                 SwingCircle cir = (SwingCircle) parent;
@@ -359,7 +356,8 @@ public class SwingClient {
 
                 if(modify != true) {
                     clientSocketManager.circleEdit(cir.getStartX(), startX, cir.getStartY(), startY, cir.getLineWidth(), cir.getLineColor(), cir.getFillColor());
-                }cir.draw(g);
+                }
+                cir.draw(g);
             }else if(parent instanceof SwingRectangle){
                 SwingRectangle rec = (SwingRectangle) parent;
                 rec.setLineWidth(currentlineWidth);

@@ -16,7 +16,10 @@ public class SwingPencil extends SwingShape{
     }
 
     public void draw(Graphics g){
-        g.drawLine(startX, startY, endX, endY);
+        Graphics2D g2d = (Graphics2D) g;
+        // 선의 굵기를 3픽셀로 설정
+        g2d.setStroke(new BasicStroke(1));
+        g2d.drawLine(startX, startY, endX, endY);
     }
 
     @Override
