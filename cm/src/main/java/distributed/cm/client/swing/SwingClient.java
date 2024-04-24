@@ -2,7 +2,6 @@ package distributed.cm.client.swing;
 
 import distributed.cm.client.ClientSocketManager;
 import distributed.cm.common.domain.*;
-import distributed.cm.server.domain.*;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;
