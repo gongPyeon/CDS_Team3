@@ -25,7 +25,11 @@ public class SquareRepository implements DrawRepository{
     public void updateDraw(Draw draw) {
         Square editSquare = (Square) draw;
         Square square = (Square) squareStore.get(new Point(editSquare.getX1(), editSquare.getY1()));
-        log.info("update squre {},{}", editSquare.getX1(), editSquare.getY1());
+        if (square == null) {
+            log.info("No such square=(x={},y={})", editSquare.getX1(), editSquare.getY1());
+            return;
+        }
+
         square.setX2(editSquare.getX2());
         square.setY2(editSquare.getY2());
         square.setBold(editSquare.getBold());
