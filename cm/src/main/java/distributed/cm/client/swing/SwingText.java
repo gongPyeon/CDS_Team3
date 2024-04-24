@@ -24,6 +24,7 @@ public class SwingText extends SwingShape{
     }
 
     public void draw(Graphics g){
+        g.setColor(Color.BLACK);
         g.drawString(input, startX, startY);
     }
 
