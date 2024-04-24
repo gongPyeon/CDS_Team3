@@ -73,7 +73,7 @@ public class ClientSocketManager {
 
     public void rectangle(int x1, int x2, int y1, int y2, int bold, String boldColor, String paintColor){
         Square square = new Square(x1, x2, y1, y2, bold, boldColor, paintColor);
-        SquareMessage squareMessage = new SquareMessage(1, drawType, square);
+        SquareMessage squareMessage = new SquareMessage(1, 4, square);
         try{
             String message = mapper.writeValueAsString(squareMessage);
             clientSocket.sendMessage(message);
