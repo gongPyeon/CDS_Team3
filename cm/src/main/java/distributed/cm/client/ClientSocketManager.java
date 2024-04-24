@@ -7,11 +7,7 @@ import distributed.cm.client.swing.SwingClient;
 import distributed.cm.server.domain.*;
 import distributed.cm.server.parser.*;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.web.socket.WebSocketSession;
 
-import java.io.Serializable;
 import java.util.Map;
 
 @Slf4j
@@ -50,6 +46,7 @@ public class ClientSocketManager {
         }
     }
 
+
     public void circle(int x1, int x2, int y1, int y2, int bold, String boldColor, String paintColor){
         Circle circle = new Circle(x1, x2, y1, y2, bold, boldColor, paintColor);
         CircleMessage circleMessage = new CircleMessage(1, 2, circle);
@@ -76,7 +73,7 @@ public class ClientSocketManager {
 
     public void rectangle(int x1, int x2, int y1, int y2, int bold, String boldColor, String paintColor){
         Square square = new Square(x1, x2, y1, y2, bold, boldColor, paintColor);
-        SquareMessage squareMessage = new SquareMessage(1, 4, square);
+        SquareMessage squareMessage = new SquareMessage(1, drawType, square);
         try{
             String message = mapper.writeValueAsString(squareMessage);
             clientSocket.sendMessage(message);
@@ -128,7 +125,7 @@ public class ClientSocketManager {
                 objectMapper,
                 new LineMessageParser(objectMapper),
                 new CircleMessageParser(objectMapper),
-                new RectangleMassageParser(objectMapper),
+                new SquareMassageParser(objectMapper),
                 new TextBoxMessageParser(objectMapper));
 
         @Override

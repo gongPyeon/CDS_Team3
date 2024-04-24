@@ -1,4 +1,4 @@
-package distributed.cm.server;
+package distributed.cm.server.response;
 
 import distributed.cm.server.repository.SessionRepository;
 import lombok.RequiredArgsConstructor;
