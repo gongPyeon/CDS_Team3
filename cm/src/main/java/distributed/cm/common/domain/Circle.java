@@ -27,4 +27,12 @@ public class Circle implements Draw{
         this.boldColor = boldColor;
         this.paintColor = paintColor;
     }
+
+    public Circle(int startX, int startY, int bold, String boldColor, String paintColor){
+        this.x1 = startX;
+        this.y2 = startY;
+        this.bold = bold;
+        this.boldColor = boldColor;
+        this.paintColor = paintColor;
+    }
 }

@@ -20,7 +20,6 @@ public class Point {
 
     @Override
     public boolean equals(Object obj) {
-        System.out.println("equals호출");
         Point point = (Point) obj;
         if (x == point.getX() && y == point.getY()) return true;
         else return false;

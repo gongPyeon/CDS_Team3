@@ -20,8 +20,6 @@ public class SquareRepository implements DrawRepository{
         Square square = (Square) draw;
         Point point = new Point(square.getX1(), square.getY1());
         squareStore.put(point, draw);
-
-        print(findAll());
     }
 
     @Override
@@ -29,7 +27,6 @@ public class SquareRepository implements DrawRepository{
         Square editSquare = (Square) draw;
         Square square = (Square) squareStore.get(new Point(editSquare.getX1(), editSquare.getY1()));
         if (square == null) {
-            log.info("No such square=(x={},y={})", editSquare.getX1(), editSquare.getY1());
             return;
         }
 
@@ -39,8 +36,6 @@ public class SquareRepository implements DrawRepository{
         square.setBoldColor(editSquare.getBoldColor());
         square.setIsPaint(editSquare.getIsPaint());
         square.setPaintColor(editSquare.getPaintColor());
-
-        print(findAll());
     }
 
     @Override
@@ -48,11 +43,4 @@ public class SquareRepository implements DrawRepository{
         return squareStore.values().stream().toList();
     }
 
-    public void print(List<Draw> draws){
-        int i = 1;
-        for (Draw draw : draws) {
-            Square square = (Square) draw;
-            log.info("square{} : x={},y={},bold={},boldColor={},paintColor={}",i++, square.getX1(), square.getY1(), square.getBold(), square.getBoldColor(), square.getPaintColor());
-        }
-    }
 }

@@ -45,7 +45,7 @@ public class SwingText extends SwingShape{
     }
 
     @Override
-    public boolean contains(int mx, int my) { //text의 크기에 따라
+    public boolean contains(int mx, int my) {
         return mx >= startX && mx <= startX && my >= startY && my <= startY;
     }
 
