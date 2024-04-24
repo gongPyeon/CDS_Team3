@@ -1,8 +1,8 @@
 package distributed.cm.server.repository;
 
-import distributed.cm.server.domain.Draw;
-import distributed.cm.server.domain.Point;
-import distributed.cm.server.domain.TextBox;
+import distributed.cm.common.domain.Draw;
+import distributed.cm.common.domain.Point;
+import distributed.cm.common.domain.TextBox;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 

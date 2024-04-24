@@ -1,4 +1,4 @@
-package distributed.cm.server.domain;
+package distributed.cm.common.domain;
 
 public interface Draw {
     public int getX1();

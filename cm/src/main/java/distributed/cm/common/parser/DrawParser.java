@@ -1,7 +1,7 @@
-package distributed.cm.server.parser;
+package distributed.cm.common.parser;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import distributed.cm.client.msg.Message;
+import distributed.cm.common.message.Message;
 
 public interface DrawParser {
     Message parse(String payload) throws JsonProcessingException;

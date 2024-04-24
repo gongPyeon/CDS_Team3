@@ -1,4 +1,4 @@
-package distributed.cm.server.domain;
+package distributed.cm.common.domain;
 
 import lombok.Getter;
 import lombok.Setter;

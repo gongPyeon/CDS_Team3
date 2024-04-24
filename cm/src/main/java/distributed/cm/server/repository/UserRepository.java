@@ -1,7 +1,7 @@
 package distributed.cm.server.repository;
 
 
-import distributed.cm.server.domain.User;
+import distributed.cm.common.domain.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 

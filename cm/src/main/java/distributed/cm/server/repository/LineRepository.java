@@ -1,8 +1,8 @@
 package distributed.cm.server.repository;
 
-import distributed.cm.server.domain.Draw;
-import distributed.cm.server.domain.Line;
-import distributed.cm.server.domain.Point;
+import distributed.cm.common.domain.Draw;
+import distributed.cm.common.domain.Line;
+import distributed.cm.common.domain.Point;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

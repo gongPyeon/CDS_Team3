@@ -1,14 +1,13 @@
 package distributed.cm.client.swing;
 
-import ch.qos.logback.core.net.server.Client;
 import distributed.cm.client.ClientSocketManager;
+import distributed.cm.common.domain.*;
 import distributed.cm.server.domain.*;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 

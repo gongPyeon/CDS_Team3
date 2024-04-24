@@ -1,14 +1,12 @@
-package distributed.cm.server.domain;
+package distributed.cm.common.domain;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 
 @Getter
 @Setter
-public class Circle implements Draw{
+public class Square implements Draw{
+
     private int x1, x2, y1, y2;
 
     private int bold;
@@ -17,10 +15,10 @@ public class Circle implements Draw{
     private int isPaint;
     private String paintColor;
 
-    public Circle() {
+    public Square() {
     }
 
-    public Circle(int x1, int x2, int y1, int y2, int bold, String boldColor, String paintColor) {
+    public Square(int x1, int x2, int y1, int y2, int bold, String boldColor, String paintColor) {
         this.x1 = x1;
         this.x2 = x2;
         this.y1 = y1;
@@ -30,7 +28,7 @@ public class Circle implements Draw{
         this.paintColor = paintColor;
     }
 
-    public Circle(int startX, int startY, int bold, String boldColor, String paintColor){
+    public Square(int startX, int startY, int bold, String boldColor, String paintColor){
         this.x1 = startX;
         this.y2 = startY;
         this.bold = bold;

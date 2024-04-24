@@ -1,4 +1,4 @@
-package distributed.cm.client.msg;
+package distributed.cm.common.message;
 
 import lombok.Getter;
 import lombok.Setter;
