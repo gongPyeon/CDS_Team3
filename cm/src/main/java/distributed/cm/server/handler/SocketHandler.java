@@ -1,6 +1,6 @@
 package distributed.cm.server.handler;
 
-import distributed.cm.server.response.ClientMessageResponser;
+import distributed.cm.server.responser.ClientMessageResponser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
