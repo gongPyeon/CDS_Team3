@@ -2,7 +2,6 @@ package distributed.cm.client;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import distributed.cm.client.message.*;
 import distributed.cm.client.swing.SwingClient;
 import distributed.cm.common.domain.Circle;
 import distributed.cm.common.domain.Line;
@@ -10,8 +9,6 @@ import distributed.cm.common.domain.Square;
 import distributed.cm.common.domain.TextBox;
 import distributed.cm.common.message.*;
 import distributed.cm.common.parser.*;
-import distributed.cm.server.domain.*;
-import distributed.cm.server.parser.*;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Map;

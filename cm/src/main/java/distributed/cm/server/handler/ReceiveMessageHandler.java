@@ -1,6 +1,5 @@
 package distributed.cm.server.handler;
 
-import distributed.cm.client.message.*;
 import distributed.cm.common.message.DefaultMessage;
 import distributed.cm.common.message.DrawMessage;
 import distributed.cm.common.message.Message;
