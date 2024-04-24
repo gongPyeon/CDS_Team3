@@ -1,7 +1,6 @@
-package distributed.cm.client.msg;
+package distributed.cm.client.message;
 
 import distributed.cm.server.domain.Circle;
-import distributed.cm.server.domain.Draw;
 import lombok.Getter;
 import lombok.Setter;
 

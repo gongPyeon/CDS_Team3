@@ -1,4 +1,4 @@
-package distributed.cm.client.msg;
+package distributed.cm.client.message;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import distributed.cm.server.domain.User;

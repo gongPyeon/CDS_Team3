@@ -2,8 +2,8 @@ package distributed.cm.server.parser;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import distributed.cm.client.msg.Message;
-import distributed.cm.client.msg.TextBoxMessage;
+import distributed.cm.client.message.Message;
+import distributed.cm.client.message.TextBoxMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

@@ -2,7 +2,7 @@ package distributed.cm.server.parser;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import distributed.cm.client.msg.UserEntryMessage;
+import distributed.cm.client.message.UserEntryMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

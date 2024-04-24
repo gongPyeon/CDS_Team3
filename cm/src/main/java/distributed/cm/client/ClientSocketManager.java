@@ -2,7 +2,7 @@ package distributed.cm.client;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import distributed.cm.client.msg.*;
+import distributed.cm.client.message.*;
 import distributed.cm.client.swing.SwingClient;
 import distributed.cm.server.domain.*;
 import distributed.cm.server.parser.*;

@@ -1,4 +1,4 @@
-package distributed.cm.client.msg;
+package distributed.cm.client.message;
 
 import distributed.cm.server.domain.Line;
 import lombok.Getter;
