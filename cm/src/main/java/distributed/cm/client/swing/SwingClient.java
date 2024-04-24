@@ -299,7 +299,6 @@ public class SwingClient {
             }
         }
 
-        //TODO
         public void setLine(Graphics g, boolean modify){ // message 보내긴
             SwingShape parent = shapes.get(shapeIndex);
             if(parent instanceof SwingCircle){
@@ -348,7 +347,6 @@ public class SwingClient {
         }
 
         public void setWidth(Graphics g, boolean modify){
-            log.info("set WIdth의 shapeIndex={}", shapeIndex);
             SwingShape parent = shapes.get(shapeIndex);
             if(parent instanceof SwingCircle){
                 SwingCircle cir = (SwingCircle) parent;
