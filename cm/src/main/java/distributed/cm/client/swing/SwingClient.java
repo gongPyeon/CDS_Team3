@@ -112,14 +112,14 @@ public class SwingClient {
                             rectangle.drawingResize();
                             rectangle.draw(g);
                             shapes.add(rectangle);
-                            clientSocketManager.rectangle(rectangle.getStartX(), rectangle.getEndX(), rectangle.getStartY(), rectangle.getEndY(), rectangle.getLineWidth(), rectangle.getLineColor(), rectangle.getFillColor());
+                            clientSocketManager.rectangle(rectangle.getStartX(), rectangle.getEndX(), rectangle.getStartY(), rectangle.getEndY(), rectangle.getLineWidth(), rectangle.getLineColor(), rectangle.getFillColor(), 4);
 
                         }else if(drawingMode == DrawingMode.CIRCLE){
                             SwingCircle circle = new SwingCircle(startX, endX, startY, endY);
                             circle.drawingResize();
                             circle.draw(g);
                             shapes.add(circle);
-                            clientSocketManager.circle(circle.getStartX(), circle.getEndX(), circle.getStartY(), circle.getEndY(),circle.getLineWidth(), circle.getLineColor(), circle.getFillColor());
+                            clientSocketManager.circle(circle.getStartX(), circle.getEndX(), circle.getStartY(), circle.getEndY(),circle.getLineWidth(), circle.getLineColor(), circle.getFillColor(), 2);
                         }
                         allowColorButton = false;
                     }else if(drawingMode == DrawingMode.PENCIL){
@@ -265,12 +265,12 @@ public class SwingClient {
             if(parent instanceof SwingCircle){
                 SwingCircle cir = (SwingCircle) parent;
                 cir.setLineColor(currentLineColor);
-                clientSocketManager.circle(cir.getStartX(),cir.getEndX(),cir.getStartY(),cir.getEndY(),cir.getLineWidth(),cir.getLineColor(),cir.getFillColor());
+                clientSocketManager.circle(cir.getStartX(),cir.getEndX(),cir.getStartY(),cir.getEndY(),cir.getLineWidth(),cir.getLineColor(),cir.getFillColor(), 3);
                 cir.draw(g);
             }else if(parent instanceof SwingRectangle){
                 SwingRectangle rec = (SwingRectangle) parent;
                 rec.setLineColor(currentLineColor);
-                clientSocketManager.rectangle(rec.getStartX(),rec.getEndX(),rec.getStartY(),rec.getEndY(),rec.getLineWidth(),rec.getLineColor(),rec.getFillColor());
+                clientSocketManager.rectangle(rec.getStartX(),rec.getEndX(),rec.getStartY(),rec.getEndY(),rec.getLineWidth(),rec.getLineColor(),rec.getFillColor(), 5);
                 rec.draw(g);
             }
 
@@ -281,12 +281,12 @@ public class SwingClient {
             if(parent instanceof SwingCircle){
                 SwingCircle cir = (SwingCircle) parent;
                 cir.setFillColor(currentFillColor);
-                clientSocketManager.circle(cir.getStartX(),cir.getEndX(),cir.getStartY(),cir.getEndY(),cir.getLineWidth(),cir.getLineColor(),cir.getFillColor());
+                clientSocketManager.circle(cir.getStartX(),cir.getEndX(),cir.getStartY(),cir.getEndY(),cir.getLineWidth(),cir.getLineColor(),cir.getFillColor(), 3);
                 cir.draw(g);
             }else if(parent instanceof SwingRectangle){
                 SwingRectangle rec = (SwingRectangle) parent;
                 rec.setFillColor(currentFillColor);
-                clientSocketManager.rectangle(rec.getStartX(),rec.getEndX(), rec.getStartY(),rec.getEndY(),rec.getLineWidth(),rec.getLineColor(),rec.getFillColor());
+                clientSocketManager.rectangle(rec.getStartX(),rec.getEndX(), rec.getStartY(),rec.getEndY(),rec.getLineWidth(),rec.getLineColor(),rec.getFillColor(), 5);
                 rec.draw(g);
             }
         }
@@ -296,12 +296,12 @@ public class SwingClient {
             if(parent instanceof SwingCircle){
                 SwingCircle cir = (SwingCircle) parent;
                 cir.setLineWidth(currentlineWidth);
-                clientSocketManager.circle(cir.getStartX(),cir.getEndX(),cir.getStartY(),cir.getEndY(),cir.getLineWidth(),cir.getLineColor(),cir.getFillColor());
+                clientSocketManager.circle(cir.getStartX(),cir.getEndX(),cir.getStartY(),cir.getEndY(),cir.getLineWidth(),cir.getLineColor(),cir.getFillColor(),3 );
                 cir.draw(g);
             }else if(parent instanceof SwingRectangle){
                 SwingRectangle rec = (SwingRectangle) parent;
                 rec.setLineWidth(currentlineWidth);
-                clientSocketManager.rectangle(rec.getStartX(),rec.getEndX(),rec.getStartY(),rec.getEndY(),rec.getLineWidth(),rec.getLineColor(),rec.getFillColor());
+                clientSocketManager.rectangle(rec.getStartX(),rec.getEndX(),rec.getStartY(),rec.getEndY(),rec.getLineWidth(),rec.getLineColor(),rec.getFillColor(), 5);
                 rec.draw(g);
             }
         }

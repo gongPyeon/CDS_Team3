@@ -56,6 +56,7 @@ public class ReceiveMessageHandler {
                 break;
             case 3,5 :
                 boardManager.editDraw(message.getDraw());
+                break;
         }
     }
 }
