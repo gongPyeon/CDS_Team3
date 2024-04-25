@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
 @Slf4j
 public class SwingClient {
 
-    private static final Logger logger = LoggerFactory.getLogger(SwingClient.class);
+    //private static final Logger logger = LoggerFactory.getLogger(SwingClient.class);
 
     private static ClientSocketManager clientSocketManager;
     private static SwingClient client = new SwingClient();
@@ -403,7 +403,7 @@ public class SwingClient {
             }else if(draw instanceof Square){
                 Square rec = (Square) draw;
                 shapeFind(rec.getX2(), rec.getY2());
-                logger.info("received x 값: {}, y 값: {}, index : {}", rec.getX2(), rec.getY2(), shapeIndex);
+                //logger.info("received x 값: {}, y 값: {}, index : {}", rec.getX2(), rec.getY2(), shapeIndex);
                 currentFillColor = rec.getPaintColor(); // 바뀐 사항들 가져오기
                 currentLineColor = rec.getBoldColor();
                 currentlineWidth = rec.getBold();
