@@ -5,7 +5,7 @@ import distributed.cm.common.message.DrawMessage;
 import distributed.cm.common.message.Message;
 import distributed.cm.server.board.BoardManager;
 import distributed.cm.common.domain.User;
-import distributed.cm.common.parser.ClientRequestParser;
+import distributed.cm.server.parser.ClientRequestParser;
 import distributed.cm.server.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -8,7 +8,7 @@ import distributed.cm.common.domain.Line;
 import distributed.cm.common.domain.Square;
 import distributed.cm.common.domain.TextBox;
 import distributed.cm.common.message.*;
-import distributed.cm.common.parser.*;
+import distributed.cm.server.parser.*;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Map;
