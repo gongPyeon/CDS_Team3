@@ -1,4 +1,4 @@
-package distributed.cm.common.parser;
+package distributed.cm.server.parser;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import distributed.cm.common.message.Message;
