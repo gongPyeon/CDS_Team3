@@ -51,7 +51,7 @@ public class ClientSocketManager {
 
 
     public void circle(int x1, int x2, int y1, int y2, int bold, String boldColor, String paintColor){
-        Circle circle = new Circle(x1, x2, y1, y2, bold, boldColor, paintColor);
+        Circle circle = new Circle(x1, x2, y1, y2, bold, boldColor, 0, paintColor);
         CircleMessage circleMessage = new CircleMessage(1, 2, circle);
         try{
             String message = mapper.writeValueAsString(circleMessage);
@@ -59,11 +59,10 @@ public class ClientSocketManager {
         }catch (JsonProcessingException e){
             e.printStackTrace();
         }
-
     }
 
     public void circleEdit(int x1, int x2, int y1, int y2, int bold, String boldColor, String paintColor){
-        Circle circle = new Circle(x1, x2, y1, y2, bold, boldColor, paintColor);
+        Circle circle = new Circle(x1, x2, y1, y2, bold, boldColor, 1, paintColor);
         CircleMessage circleMessage = new CircleMessage(1, 3, circle);
         try{
             String message = mapper.writeValueAsString(circleMessage);
@@ -75,7 +74,7 @@ public class ClientSocketManager {
     }
 
     public void rectangle(int x1, int x2, int y1, int y2, int bold, String boldColor, String paintColor){
-        Square square = new Square(x1, x2, y1, y2, bold, boldColor, paintColor);
+        Square square = new Square(x1, x2, y1, y2, bold, boldColor, 0, paintColor);
         SquareMessage squareMessage = new SquareMessage(1, 4, square);
         try{
             String message = mapper.writeValueAsString(squareMessage);
@@ -86,7 +85,7 @@ public class ClientSocketManager {
     }
 
     public void rectangleEdit(int x1, int x2, int y1, int y2, int bold, String boldColor, String paintColor){
-        Square square = new Square(x1, x2, y1, y2, bold, boldColor, paintColor);
+        Square square = new Square(x1, x2, y1, y2, bold, boldColor, 1, paintColor);
         SquareMessage squareMessage = new SquareMessage(1, 5, square);
         try{
             String message = mapper.writeValueAsString(squareMessage);
