@@ -10,6 +10,12 @@ import java.awt.event.*;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import java.util.List;
+import distributed.cm.common.domain.Circle;
+import distributed.cm.common.domain.Line;
+import distributed.cm.common.domain.Square;
+import distributed.cm.common.domain.TextBox;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,6 +49,10 @@ public class SwingClient {
     }
     public void panelLogout(String usrId){
         drawingPanel.logoutMessage(usrId);
+    }
+
+    public void panelListDraw(List<Line> line, List<Circle> cir, List<Square> rec, List<TextBox> text){
+        drawingPanel.listDrawMessage(line, cir, rec, text);
     }
 
     public static void main(String[] args) throws IOException {
@@ -437,6 +447,10 @@ public class SwingClient {
             }
         }
 
+        public void listDrawMessage(List<Line> line, List<Circle> cir, List<Square> rec, List<TextBox> text){
+            //draw list로 받아야 received message를 돌리는데 !
+        }
+
 
         public void loginMessage(String usrId){ //login
             JOptionPane.showMessageDialog(null, usrId+"님이 접속했습니다.", "알림", JOptionPane.INFORMATION_MESSAGE);
@@ -449,6 +463,9 @@ public class SwingClient {
     }
     enum DrawingMode {PENCIL, RECTANGLE, CIRCLE, TEXTBOX, SELLECT, NULL}
 
+//    public void lockMessage(){
+//        JOptionPane.showMessageDialog(null, "다른 사용자가 수정중이므로 접속할 수 없습니다", "알림", JOptionPane.INFORMATION_MESSAGE);
+//    }
     public String nameSetting() { // panel생성 전에 사용자 이름을 입력받는다
         String usrName = null;
         while (true) {

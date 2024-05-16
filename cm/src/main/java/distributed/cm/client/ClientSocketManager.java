@@ -174,9 +174,12 @@ public class ClientSocketManager {
 
         }
 
+        //메세지가 왔을때, (수정메세지) 접속중이라고 메세지 띄우기 => lock message 이어서 구현
+
         public void onDrawListMessage(DrawListMessage message){
             SwingClient client = SwingClient.getClient();
             //message타입이 무슨 뜻인지 확인하기
+            //리스트 넘기기?
         }
     }
 
