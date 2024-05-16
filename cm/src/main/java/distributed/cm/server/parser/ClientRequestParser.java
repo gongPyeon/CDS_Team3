@@ -3,6 +3,7 @@ package distributed.cm.server.parser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import distributed.cm.common.message.DefaultMessage;
+import distributed.cm.common.message.DrawListMessage;
 import distributed.cm.common.message.Message;
 import org.springframework.stereotype.Component;
 
@@ -42,7 +43,11 @@ public class ClientRequestParser {
     public Message parse(String payload) throws JsonProcessingException {
         DefaultMessage defaultMessage = objectMapper.readValue(payload, DefaultMessage.class);
 
-        if(defaultMessage.getMessageType() == 0) return defaultMessage;
+        if(defaultMessage.getMessageType() == 0) {
+            return defaultMessage;
+        } else if(defaultMessage.getMessageType() == 2){
+            return objectMapper.readValue(payload, DrawListMessage.class);
+        }
 
         DrawParser drawParser = drawParserMap.get(defaultMessage.getDrawType());
         return drawParser.parse(payload);

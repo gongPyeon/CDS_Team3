@@ -1,22 +1,14 @@
 package distributed.cm.common.domain;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Objects;
 
 @Getter
-@Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class Point {
     private int x, y;
-
-    public Point() {
-    }
-
-    public Point(int x, int y) {
-        this.x = x;
-        this.y = y;
-    }
 
     @Override
     public boolean equals(Object obj) {
