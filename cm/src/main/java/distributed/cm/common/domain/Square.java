@@ -5,10 +5,15 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.concurrent.locks.ReentrantLock;
+
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class Square implements Draw{
+
+    private ReentrantLock lock = new ReentrantLock();
+
     private int x1, x2, y1, y2;
 
     private int bold;
@@ -18,13 +23,18 @@ public class Square implements Draw{
     private String paintColor;
 
     public void updateDraw(Square draw){
-        this.x1 = draw.getX1();
-        this.x2 = draw.getX2();
-        this.y1 = draw.getY1();
-        this.y2 = draw.getY2();
-        this.bold = draw.getBold();
-        this.boldColor = draw.getBoldColor();
-        this.isPaint = draw.getIsPaint();
-        this.paintColor = draw.getPaintColor();
+        lock.lock();
+        try {
+            this.x1 = draw.getX1();
+            this.x2 = draw.getX2();
+            this.y1 = draw.getY1();
+            this.y2 = draw.getY2();
+            this.bold = draw.getBold();
+            this.boldColor = draw.getBoldColor();
+            this.isPaint = draw.getIsPaint();
+            this.paintColor = draw.getPaintColor();
+        } finally{
+            lock.unlock();
+        }
     }
 }
