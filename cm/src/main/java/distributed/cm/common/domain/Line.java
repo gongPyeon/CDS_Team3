@@ -7,7 +7,6 @@ import java.util.concurrent.locks.ReentrantLock;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 public class Line implements Draw{
 
     private ReentrantLock lock = new ReentrantLock();
@@ -16,6 +15,15 @@ public class Line implements Draw{
 
     private int bold;
     private String boldColor;
+
+    public Line(int x1, int x2, int y1, int y2, int bold, String boldColor) {
+        this.x1 = x1;
+        this.x2 = x2;
+        this.y1 = y1;
+        this.y2 = y2;
+        this.bold = bold;
+        this.boldColor = boldColor;
+    }
 
     public void updateDraw(Line draw){
         lock.lock();

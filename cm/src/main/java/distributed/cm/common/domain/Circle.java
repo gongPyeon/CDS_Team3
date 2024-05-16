@@ -11,7 +11,6 @@ import java.util.concurrent.locks.ReentrantLock;
 
 
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Circle implements Draw{
 
@@ -25,6 +24,17 @@ public class Circle implements Draw{
 
     private int isPaint;
     private String paintColor;
+
+    public Circle(int x1, int x2, int y1, int y2, int bold, String boldColor, int isPaint, String paintColor) {
+        this.x1 = x1;
+        this.x2 = x2;
+        this.y1 = y1;
+        this.y2 = y2;
+        this.bold = bold;
+        this.boldColor = boldColor;
+        this.isPaint = isPaint;
+        this.paintColor = paintColor;
+    }
 
     public void updateDraw(Circle draw){
         if(lock.isLocked())
