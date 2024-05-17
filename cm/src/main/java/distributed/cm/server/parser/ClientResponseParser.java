@@ -2,11 +2,14 @@ package distributed.cm.server.parser;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import distributed.cm.common.domain.Draw;
+import distributed.cm.common.message.DrawListMessage;
 import distributed.cm.common.message.UserEntryMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -16,19 +19,31 @@ public class ClientResponseParser {
 
     private final ObjectMapper objectMapper;
 
-    public String createOpenSocketMessage(String sessionId) throws JsonProcessingException {
-        Map<String, String> message = Map.of("Message", "Success connection!", "sessionId", sessionId);
-        return objectMapper.writeValueAsString(message);
+    public String createCloseSocketMessage(String userId) {
+        try{
+            UserEntryMessage userEntryMessage = new UserEntryMessage(0, 1, userId);
+            return objectMapper.writeValueAsString(userEntryMessage);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    public String createCloseSocketMessage(String userId) throws JsonProcessingException {
-        UserEntryMessage userEntryMessage = new UserEntryMessage(0, 1, userId);
-        return objectMapper.writeValueAsString(userEntryMessage);
+    public String createLoadDrawMessage(List<Draw> draws) {
+        try{
+            DrawListMessage message = new DrawListMessage(2, draws);
+            return objectMapper.writeValueAsString(message);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    public String createAllDrawsMessage(Map<String, Object> draws) throws JsonProcessingException {
-        draws.put("messageType", 1);
-        draws.put("drawType", 0);
-        return objectMapper.writeValueAsString(draws);
+    public String createEditErrorMessage(){
+        try {
+            return objectMapper.writeValueAsString(Map.of("messageType", 3));
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
+
+
 }

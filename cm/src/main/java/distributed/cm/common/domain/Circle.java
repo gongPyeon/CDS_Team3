@@ -1,21 +1,21 @@
 package distributed.cm.common.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.locks.ReentrantLock;
 
 
-@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 public class Circle implements Draw{
 
-    private static final Logger log = LoggerFactory.getLogger(Circle.class);
+    @JsonIgnore
     private ReentrantLock lock = new ReentrantLock();
+
+    private DrawType type = DrawType.CIRCLE;
 
     private int x1, x2, y1, y2;
 
@@ -36,19 +36,24 @@ public class Circle implements Draw{
         this.paintColor = paintColor;
     }
 
-    public void updateDraw(Circle draw){
-        if(lock.isLocked())
-        lock.lock();
-        try {
-            this.x1 = draw.getX1();
-            this.x2 = draw.getX2();
-            this.y1 = draw.getY1();
-            this.y2 = draw.getY2();
-            this.bold = draw.getBold();
-            this.isPaint = draw.getIsPaint();
-            this.paintColor = draw.getPaintColor();
-        } finally{
-            lock.unlock();
+    @Override
+    public boolean updateDraw(Draw editDraw){
+        Circle circle = (Circle) editDraw;
+        if(lock.tryLock()){
+            try {
+                this.x1 = circle.getX1();
+                this.x2 = circle.getX2();
+                this.y1 = circle.getY1();
+                this.y2 = circle.getY2();
+                this.bold = circle.getBold();
+                this.isPaint = circle.getIsPaint();
+                this.paintColor = circle.getPaintColor();
+                return true;
+            } finally{
+                lock.unlock();
+            }
+        }else {
+            return false;
         }
     }
 }

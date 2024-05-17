@@ -4,6 +4,8 @@ import distributed.cm.common.domain.User;
 import distributed.cm.server.parser.ClientResponseParser;
 import distributed.cm.server.repository.SessionRepository;
 import distributed.cm.server.repository.UserRepository;
+import distributed.cm.server.responser.MessageSender;
+import distributed.cm.server.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -16,23 +18,23 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class EntrySocketHandler {
 
-    private final SessionRepository sessionRepository;
-    private final UserRepository userRepository;
     private final ClientResponseParser clientResponseParser;
+    private final UserService userService;
+    private final MessageSender messageSender;
 
-    public void openSocketHandle(String sessionId, WebSocketSession session) throws IOException {
-        //세션
+    private final SessionRepository sessionRepository;
+
+    public void openSocketHandle(String sessionId, WebSocketSession session) {
         sessionRepository.saveSession(sessionId, session);
     }
 
-    public String closeSocketHandle(String sessionId) throws IOException {
+    public void closeSocketHandle(String sessionId) {
         sessionRepository.removeSession(sessionId);
-        User user = userRepository.findUserBySessionId(sessionId);
-        if (user != null) {
-            userRepository.removeUser(sessionId);
-            String closeSocketMessage = clientResponseParser.createCloseSocketMessage(user.getUserId());
-            return closeSocketMessage;
+
+        if(userService.findUser(sessionId) != null){
+            String exitUserId = userService.userExit(sessionId);
+            String closeSocketMessage = clientResponseParser.createCloseSocketMessage(exitUserId);
+            messageSender.sendMessageAllSocket(closeSocketMessage);
         }
-        return null;
     }
 }

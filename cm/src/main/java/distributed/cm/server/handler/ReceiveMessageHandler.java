@@ -1,64 +1,73 @@
 package distributed.cm.server.handler;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import distributed.cm.common.domain.Draw;
 import distributed.cm.common.message.DefaultMessage;
 import distributed.cm.common.message.DrawMessage;
 import distributed.cm.common.message.Message;
-import distributed.cm.server.board.BoardManager;
-import distributed.cm.common.domain.User;
+import distributed.cm.server.parser.ClientResponseParser;
+import distributed.cm.server.responser.MessageSender;
+import distributed.cm.server.service.BoardService;
 import distributed.cm.server.parser.ClientRequestParser;
-import distributed.cm.server.repository.UserRepository;
+import distributed.cm.server.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
+import java.util.List;
 
 @Slf4j
 @Component
 @RequiredArgsConstructor
 public class ReceiveMessageHandler {
-    private final UserRepository userRepository;
+
     private final ClientRequestParser clientRequestParser;
+    private final ClientResponseParser clientResponseParser;
 
-    private final BoardManager boardManager;
-    public String handle(String sessionId, String payload) throws IOException {
+    private final BoardService boardService;
+    private final UserService userService;
+
+    private final MessageSender messageSender;
+
+    public void handle(String sessionId, String payload){
         //요청 메세지 파싱
-        Message message = clientRequestParser.parse(payload);
-        if (message instanceof DefaultMessage) {
-            userEntryHandle(sessionId, (DefaultMessage) message);
-        } else {
-            drawMessageHandle((DrawMessage) message);
+        try {
+            Message message = clientRequestParser.parse(payload);
+            if (message instanceof DefaultMessage) {
+                userEntryHandle(sessionId, (DefaultMessage) message, payload);
+            } else {
+                drawMessageHandle((DrawMessage) message, sessionId, payload);
+            }
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
         }
-        return payload;
     }
 
-    private void userEntryHandle(String sessionId, DefaultMessage message) throws IOException {
-        if(message.getEntry() == 1){//퇴장
-            userRepository.removeUser(sessionId);
-            return;
-        }
+    private void userEntryHandle(String sessionId, DefaultMessage message, String payload) {
+        if(message.getEntry() == 0) userService.userEnter(sessionId, message);
+        else if (message.getEntry() == 1) userService.userExit(sessionId);
 
-        User user = new User(sessionId, message.getUserId());
-        userRepository.saveUser(sessionId, user);
+        List<Draw> draws = boardService.loadBoard();
 
-        //TODO
-        /*Map<String, Object> draws = boardManager.loadBoard();
-        String responseMessage = clientResponseParser.createAllDrawsMessage(draws);
-
-        WebSocketSession userSession = sessionRepository.findSession(sessionId);
-        clientMessageResponser.sendMessageSocket(responseMessage, userSession);*/
-
-
+        String loadMessage = clientResponseParser.createLoadDrawMessage(draws);
+        messageSender.sendMessage(sessionId, loadMessage); //로드 메세지
+        messageSender.sendMessageAllSocket(payload, sessionId); //유저 입장 메세지 -> 해당 유저 제외한 모든 유저
     }
 
-    private void drawMessageHandle(DrawMessage message) {
+    private void drawMessageHandle(DrawMessage message, String sessionId, String payload) {
         switch (message.getDrawType()){
             case 1,2,4,6 :
-                boardManager.saveDraw(message.getDraw());
+                boardService.saveDraw(message.getDraw());
+                messageSender.sendMessageAllSocket(payload, sessionId);
                 break;
             case 3,5 :
-                boardManager.editDraw(message.getDraw());
-                break;
+                boolean isEdit = boardService.editDraw(message.getDraw());
+                if(isEdit) {
+                    messageSender.sendMessageAllSocket(payload);
+                } else {
+                    String responseMessage = clientResponseParser.createEditErrorMessage();
+                    messageSender.sendMessage(sessionId, responseMessage);
+                }
         }
     }
 }
