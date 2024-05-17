@@ -14,7 +14,6 @@ import java.util.concurrent.locks.ReentrantLock;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Circle implements Draw{
 
-    private static final Logger log = LoggerFactory.getLogger(Circle.class);
     private ReentrantLock lock = new ReentrantLock();
 
     private int x1, x2, y1, y2;

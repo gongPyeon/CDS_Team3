@@ -6,7 +6,6 @@ import java.util.concurrent.locks.ReentrantLock;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 public class TextBox implements Draw{
 
     private ReentrantLock lock = new ReentrantLock();
