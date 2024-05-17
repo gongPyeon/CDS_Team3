@@ -32,17 +32,19 @@ public class Square implements Draw{
         this.paintColor = paintColor;
     }
 
-    public void updateDraw(Square draw){
+    @Override
+    public void updateDraw(Draw draw){
+        Square square = (Square) draw;
         lock.lock();
         try {
-            this.x1 = draw.getX1();
-            this.x2 = draw.getX2();
-            this.y1 = draw.getY1();
-            this.y2 = draw.getY2();
-            this.bold = draw.getBold();
-            this.boldColor = draw.getBoldColor();
-            this.isPaint = draw.getIsPaint();
-            this.paintColor = draw.getPaintColor();
+            this.x1 = square.getX1();
+            this.x2 = square.getX2();
+            this.y1 = square.getY1();
+            this.y2 = square.getY2();
+            this.bold = square.getBold();
+            this.boldColor = square.getBoldColor();
+            this.isPaint = square.getIsPaint();
+            this.paintColor = square.getPaintColor();
         } finally{
             lock.unlock();
         }

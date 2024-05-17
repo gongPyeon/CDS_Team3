@@ -23,14 +23,16 @@ public class TextBox implements Draw{
         this.bold = bold;
     }
 
-    public void updateDraw(TextBox draw){
+    @Override
+    public void updateDraw(Draw draw){
+        TextBox textBox = (TextBox) draw;
         lock.lock();
         try {
-            this.x1 = draw.getX1();
-            this.y1 = draw.getY1();
-            this.text = draw.getText();
-            this.fontColor = draw.getFontColor();
-            this.bold = draw.getBold();
+            this.x1 = textBox.getX1();
+            this.y1 = textBox.getY1();
+            this.text = textBox.getText();
+            this.fontColor = textBox.getFontColor();
+            this.bold = textBox.getBold();
         } finally{
             lock.unlock();
         }

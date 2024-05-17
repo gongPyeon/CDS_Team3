@@ -1,6 +1,5 @@
 package distributed.cm.common.domain;
 
-
 import lombok.*;
 
 import java.util.concurrent.locks.ReentrantLock;
@@ -25,15 +24,17 @@ public class Line implements Draw{
         this.boldColor = boldColor;
     }
 
-    public void updateDraw(Line draw){
+    @Override
+    public void updateDraw(Draw draw){
+        Line line = (Line) draw;
         lock.lock();
         try {
-            this.x1 = draw.getX1();
-            this.x2 = draw.getX2();
-            this.y1 = draw.getY1();
-            this.y2 = draw.getY2();
-            this.bold = draw.getBold();
-            this.boldColor = draw.getBoldColor();
+            this.x1 = line.getX1();
+            this.x2 = line.getX2();
+            this.y1 = line.getY1();
+            this.y2 = line.getY2();
+            this.bold = line.getBold();
+            this.boldColor = line.getBoldColor();
         } finally{
             lock.unlock();
         }
