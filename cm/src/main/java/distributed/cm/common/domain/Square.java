@@ -1,17 +1,20 @@
 package distributed.cm.common.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.concurrent.locks.ReentrantLock;
 
-@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 public class Square implements Draw{
 
+    @JsonIgnore
     private ReentrantLock lock = new ReentrantLock();
+
+    private DrawType type = DrawType.SQUARE;
 
     private int x1, x2, y1, y2;
 
@@ -33,20 +36,24 @@ public class Square implements Draw{
     }
 
     @Override
-    public void updateDraw(Draw draw){
-        Square square = (Square) draw;
-        lock.lock();
-        try {
-            this.x1 = square.getX1();
-            this.x2 = square.getX2();
-            this.y1 = square.getY1();
-            this.y2 = square.getY2();
-            this.bold = square.getBold();
-            this.boldColor = square.getBoldColor();
-            this.isPaint = square.getIsPaint();
-            this.paintColor = square.getPaintColor();
-        } finally{
-            lock.unlock();
+    public boolean updateDraw(Draw editDraw){
+        Square square = (Square) editDraw;
+        if (lock.tryLock()) {
+            try {
+                this.x1 = square.getX1();
+                this.x2 = square.getX2();
+                this.y1 = square.getY1();
+                this.y2 = square.getY2();
+                this.bold = square.getBold();
+                this.boldColor = square.getBoldColor();
+                this.isPaint = square.getIsPaint();
+                this.paintColor = square.getPaintColor();
+                return true;
+            } finally {
+                lock.unlock();
+            }
+        } else {
+            return false;
         }
     }
 }

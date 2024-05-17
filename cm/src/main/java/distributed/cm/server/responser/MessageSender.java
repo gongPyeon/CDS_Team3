@@ -13,13 +13,11 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 @Component
-public class ClientMessageResponser {
+public class MessageSender {
 
     private final SessionRepository sessionRepository;
 
     public void sendMessageAllSocket(String message, String exceptId) {
-        if (message == null) return;
-
         List<WebSocketSession> sessions = sessionRepository.findAllSessions();
         for (WebSocketSession session : sessions) {
             try {
@@ -31,8 +29,25 @@ public class ClientMessageResponser {
         }
     }
 
-    public void sendMessageSocket(String message, WebSocketSession session) throws IOException {
-        if (message == null) return;
-        session.sendMessage(new TextMessage(message));
+    public void sendMessageAllSocket(String message) {
+        List<WebSocketSession> sessions = sessionRepository.findAllSessions();
+        TextMessage textMessage = new TextMessage(message);
+
+        for (WebSocketSession session : sessions) {
+            try {
+                session.sendMessage(textMessage);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    public void sendMessage(String sessionId, String message){
+        WebSocketSession session = sessionRepository.findSession(sessionId);
+        try {
+            session.sendMessage(new TextMessage(message));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

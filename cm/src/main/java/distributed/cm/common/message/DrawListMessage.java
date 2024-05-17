@@ -1,6 +1,6 @@
 package distributed.cm.common.message;
 
-import distributed.cm.common.domain.Line;
+import distributed.cm.common.domain.Draw;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,8 +13,5 @@ import java.util.List;
 @AllArgsConstructor
 public class DrawListMessage implements Message {
     private int messageType;
-    private List<Line> line;
-    private List<Line> circle;
-    private List<Line> textBox;
-    private List<Line> square;
+    private List<Draw> draw;
 }

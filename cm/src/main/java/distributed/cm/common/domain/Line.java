@@ -1,14 +1,18 @@
 package distributed.cm.common.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import java.util.concurrent.locks.ReentrantLock;
 
-@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 public class Line implements Draw{
 
+    @JsonIgnore
     private ReentrantLock lock = new ReentrantLock();
+
+    private DrawType type = DrawType.LINE;
 
     private int x1, x2, y1, y2;
 
@@ -25,18 +29,23 @@ public class Line implements Draw{
     }
 
     @Override
-    public void updateDraw(Draw draw){
-        Line line = (Line) draw;
-        lock.lock();
-        try {
-            this.x1 = line.getX1();
-            this.x2 = line.getX2();
-            this.y1 = line.getY1();
-            this.y2 = line.getY2();
-            this.bold = line.getBold();
-            this.boldColor = line.getBoldColor();
-        } finally{
-            lock.unlock();
+    public boolean updateDraw(Draw editDraw){
+        Line line = (Line) editDraw;
+        if(lock.tryLock()){
+            try {
+                this.x1 = line.getX1();
+                this.x2 = line.getX2();
+                this.y1 = line.getY1();
+                this.y2 = line.getY2();
+                this.bold = line.getBold();
+                this.boldColor = line.getBoldColor();
+                return true;
+            } finally{
+                lock.unlock();
+            }
+        }else{
+            return false;
         }
+
     }
 }
