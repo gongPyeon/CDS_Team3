@@ -170,13 +170,13 @@ public class SwingClient {
             JButton RecButton = new JButton("Rectangle");
             RecButton.addActionListener(new ActionListener() {
                 @Override
-                public void actionPerformed(ActionEvent e) { drawingMode = DrawingMode.RECTANGLE; }
+                public void actionPerformed(ActionEvent e) { drawingMode = DrawingMode.RECTANGLE; startX = endX; startY = endY;}
             });
 
             JButton cirButton = new JButton("Circle");
             cirButton.addActionListener(new ActionListener() {
                 @Override
-                public void actionPerformed(ActionEvent e) { drawingMode = DrawingMode.CIRCLE;}
+                public void actionPerformed(ActionEvent e) { drawingMode = DrawingMode.CIRCLE; startX = endX; startY = endY;}
             });
 
             JButton textButton = new JButton("Textbox");
@@ -321,7 +321,7 @@ public class SwingClient {
                 SwingCircle cir = (SwingCircle) parent;
 
                 if(!modified) {
-                    clientSocketManager.circleEdit(cir.getStartX(), startX, cir.getStartY(), startY, cir.getLineWidth(), currentLineColor, cir.getFillColor());
+                    clientSocketManager.circleEdit(cir.getStartX(), cir.getEndX(), cir.getStartY(), cir.getEndY(), cir.getLineWidth(), currentLineColor, cir.getFillColor());
                     //메세지를 보내기만 하고 리턴하기 (필드에 적용시키지 않기 때문에 repaint를 하지 않는다)
                     return;
                 }
@@ -333,7 +333,7 @@ public class SwingClient {
                 SwingRectangle rec = (SwingRectangle) parent;
 
                 if(!modified) {
-                    clientSocketManager.rectangleEdit(rec.getStartX(), startX, rec.getStartY(), startY, rec.getLineWidth(), currentLineColor, rec.getFillColor());
+                    clientSocketManager.rectangleEdit(rec.getStartX(), rec.getEndX(), rec.getStartY(), rec.getEndY(), rec.getLineWidth(), currentLineColor, rec.getFillColor());
                     return;
                 }
                 rec.setLineColor(currentLineColor);
@@ -349,7 +349,7 @@ public class SwingClient {
                 SwingCircle cir = (SwingCircle) parent;
 
                 if(!modified) {
-                    clientSocketManager.circleEdit(cir.getStartX(), startX, cir.getStartY(), startY, cir.getLineWidth(), cir.getLineColor(), currentFillColor);
+                    clientSocketManager.circleEdit(cir.getStartX(), cir.getEndX(), cir.getStartY(), cir.getEndY(), cir.getLineWidth(), cir.getLineColor(), currentFillColor);
                     return;
                 }
 
@@ -360,7 +360,7 @@ public class SwingClient {
                 SwingRectangle rec = (SwingRectangle) parent;
 
                 if(!modified) {
-                    clientSocketManager.rectangleEdit(rec.getStartX(), startX, rec.getStartY(), startY, rec.getLineWidth(), rec.getLineColor(), currentFillColor);
+                    clientSocketManager.rectangleEdit(rec.getStartX(), rec.getEndX(), rec.getStartY(), rec.getEndY(), rec.getLineWidth(), rec.getLineColor(), currentFillColor);
                     return;
                 } //현재 클릭된 값을 넘겨보자
 
@@ -377,7 +377,7 @@ public class SwingClient {
 
 
                 if(!modified) {
-                    clientSocketManager.circleEdit(cir.getStartX(), startX, cir.getStartY(), startY, currentlineWidth, cir.getLineColor(), cir.getFillColor());
+                    clientSocketManager.circleEdit(cir.getStartX(), cir.getEndX(), cir.getStartY(), cir.getEndY(), currentlineWidth, cir.getLineColor(), cir.getFillColor());
                     return;
                 }
 
@@ -388,7 +388,7 @@ public class SwingClient {
                 SwingRectangle rec = (SwingRectangle) parent;
 
                 if(!modified) {
-                    clientSocketManager.rectangleEdit(rec.getStartX(), startX, rec.getStartY(), startY, currentlineWidth, rec.getLineColor(), rec.getFillColor());
+                    clientSocketManager.rectangleEdit(rec.getStartX(), rec.getEndX(), rec.getStartY(), rec.getEndY(), currentlineWidth, rec.getLineColor(), rec.getFillColor());
                     return;
                 }
 
