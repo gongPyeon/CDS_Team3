@@ -38,6 +38,8 @@ public class ClientRequestParser {
         drawParserMap.put(4, squareMassageParser);
         drawParserMap.put(5, squareMassageParser);
         drawParserMap.put(6, textBoxMessageParser);
+        drawParserMap.put(7, circleMessageParser);
+        drawParserMap.put(8, squareMassageParser);
     }
 
     public Message parse(String payload) throws JsonProcessingException {
