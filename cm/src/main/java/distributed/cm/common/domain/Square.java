@@ -12,7 +12,11 @@ import java.util.concurrent.locks.ReentrantLock;
 public class Square implements Draw{
 
     @JsonIgnore
-    private ReentrantLock lock = new ReentrantLock();
+    private ReentrantLock updateLock = new ReentrantLock();
+    @JsonIgnore
+    private ReentrantLock selectLock = new ReentrantLock();
+    @JsonIgnore
+    private String selectOwner;
 
     private DrawType type = DrawType.SQUARE;
 
@@ -36,24 +40,41 @@ public class Square implements Draw{
     }
 
     @Override
-    public boolean updateDraw(Draw editDraw){
+    public boolean updateDraw(Draw editDraw, String sessionId){
         Square square = (Square) editDraw;
-        if (lock.tryLock()) {
-            try {
-                this.x1 = square.getX1();
-                this.x2 = square.getX2();
-                this.y1 = square.getY1();
-                this.y2 = square.getY2();
-                this.bold = square.getBold();
-                this.boldColor = square.getBoldColor();
-                this.isPaint = square.getIsPaint();
-                this.paintColor = square.getPaintColor();
-                return true;
-            } finally {
-                lock.unlock();
-            }
-        } else {
+        if (!selectLock.tryLock() && !selectOwner.equals(sessionId)) {
             return false;
         }
+        try {
+            if (updateLock.tryLock()) {
+                try {
+                    this.x1 = square.getX1();
+                    this.x2 = square.getX2();
+                    this.y1 = square.getY1();
+                    this.y2 = square.getY2();
+                    this.bold = square.getBold();
+                    this.boldColor = square.getBoldColor();
+                    this.isPaint = square.getIsPaint();
+                    this.paintColor = square.getPaintColor();
+                    return true;
+                } finally {
+                    updateLock.unlock();
+                }
+            }
+            return false;
+        } finally{
+            selectLock.unlock();
+            selectOwner = null;
+        }
+    }
+
+    @Override
+    public boolean selectDraw(String sessionId) {
+        if (selectLock.tryLock()){
+            return true;
+        }else if (selectOwner.equals(sessionId)){
+            return true;
+        }
+        return false;
     }
 }

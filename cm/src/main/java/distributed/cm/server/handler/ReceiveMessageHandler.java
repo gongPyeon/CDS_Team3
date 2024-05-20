@@ -61,8 +61,16 @@ public class ReceiveMessageHandler {
                 messageSender.sendMessageAllSocket(payload, sessionId);
                 break;
             case 3,5 :
-                boolean isEdit = boardService.editDraw(message.getDraw());
+                boolean isEdit = boardService.editDraw(message.getDraw(), sessionId);
                 if(isEdit) {
+                    messageSender.sendMessageAllSocket(payload);
+                } else {
+                    String responseMessage = clientResponseParser.createEditErrorMessage();
+                    messageSender.sendMessage(sessionId, responseMessage);
+                }
+            case 7,8 :
+                boolean isSelect = boardService.selectDraw(message.getDraw(), sessionId);
+                if(isSelect) {
                     messageSender.sendMessageAllSocket(payload);
                 } else {
                     String responseMessage = clientResponseParser.createEditErrorMessage();
