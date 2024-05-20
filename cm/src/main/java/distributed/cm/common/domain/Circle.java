@@ -13,7 +13,11 @@ import java.util.concurrent.locks.ReentrantLock;
 public class Circle implements Draw{
 
     @JsonIgnore
-    private ReentrantLock lock = new ReentrantLock();
+    private ReentrantLock updateLock = new ReentrantLock();
+    @JsonIgnore
+    private ReentrantLock selectLock = new ReentrantLock();
+    @JsonIgnore
+    private String selectOwner;
 
     private DrawType type = DrawType.CIRCLE;
 
@@ -37,23 +41,40 @@ public class Circle implements Draw{
     }
 
     @Override
-    public boolean updateDraw(Draw editDraw){
+    public boolean updateDraw(Draw editDraw, String sessionId){
         Circle circle = (Circle) editDraw;
-        if(lock.tryLock()){
-            try {
-                this.x1 = circle.getX1();
-                this.x2 = circle.getX2();
-                this.y1 = circle.getY1();
-                this.y2 = circle.getY2();
-                this.bold = circle.getBold();
-                this.isPaint = circle.getIsPaint();
-                this.paintColor = circle.getPaintColor();
-                return true;
-            } finally{
-                lock.unlock();
-            }
-        }else {
+        if (!selectLock.tryLock() && !selectOwner.equals(sessionId)) {
             return false;
         }
+        try {
+            if (updateLock.tryLock()) {
+                try {
+                    this.x1 = circle.getX1();
+                    this.x2 = circle.getX2();
+                    this.y1 = circle.getY1();
+                    this.y2 = circle.getY2();
+                    this.bold = circle.getBold();
+                    this.isPaint = circle.getIsPaint();
+                    this.paintColor = circle.getPaintColor();
+                    return true;
+                } finally {
+                    updateLock.unlock();
+                }
+            }
+            return false;
+        } finally{
+            selectLock.unlock();
+            selectOwner = null;
+        }
+    }
+
+    @Override
+    public boolean selectDraw(String sessionId) {
+        if (selectLock.tryLock()){
+            return true;
+        }else if (selectOwner.equals(sessionId)){
+            return true;
+        }
+        return false;
     }
 }

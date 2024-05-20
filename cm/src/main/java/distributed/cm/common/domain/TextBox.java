@@ -10,7 +10,7 @@ import java.util.concurrent.locks.ReentrantLock;
 public class TextBox implements Draw{
 
     @JsonIgnore
-    private ReentrantLock lock = new ReentrantLock();
+    private ReentrantLock updateLock = new ReentrantLock();
 
     DrawType type = DrawType.TEXTBOX;
 
@@ -28,9 +28,9 @@ public class TextBox implements Draw{
     }
 
     @Override
-    public boolean updateDraw(Draw editDraw){
+    public boolean updateDraw(Draw editDraw, String sessionId){
         TextBox textBox = (TextBox) editDraw;
-        if (lock.tryLock()) {
+        if (updateLock.tryLock()) {
             try {
                 this.x1 = textBox.getX1();
                 this.y1 = textBox.getY1();
@@ -39,10 +39,15 @@ public class TextBox implements Draw{
                 this.bold = textBox.getBold();
                 return true;
             } finally {
-                lock.unlock();
+                updateLock.unlock();
             }
         } else {
             return false;
         }
+    }
+
+    @Override
+    public boolean selectDraw(String sessionId) {
+        return false;
     }
 }

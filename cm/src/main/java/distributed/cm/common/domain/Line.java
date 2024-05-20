@@ -10,7 +10,7 @@ import java.util.concurrent.locks.ReentrantLock;
 public class Line implements Draw{
 
     @JsonIgnore
-    private ReentrantLock lock = new ReentrantLock();
+    private ReentrantLock updateLock = new ReentrantLock();
 
     private DrawType type = DrawType.LINE;
 
@@ -29,9 +29,9 @@ public class Line implements Draw{
     }
 
     @Override
-    public boolean updateDraw(Draw editDraw){
+    public boolean updateDraw(Draw editDraw, String sessionId){
         Line line = (Line) editDraw;
-        if(lock.tryLock()){
+        if(updateLock.tryLock()){
             try {
                 this.x1 = line.getX1();
                 this.x2 = line.getX2();
@@ -41,11 +41,16 @@ public class Line implements Draw{
                 this.boldColor = line.getBoldColor();
                 return true;
             } finally{
-                lock.unlock();
+                updateLock.unlock();
             }
         }else{
             return false;
         }
 
+    }
+
+    @Override
+    public boolean selectDraw(String sessionId) {
+        return false;
     }
 }

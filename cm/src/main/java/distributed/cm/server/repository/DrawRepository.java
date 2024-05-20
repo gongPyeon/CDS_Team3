@@ -9,7 +9,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
 @Repository
@@ -22,17 +21,27 @@ public class DrawRepository {
         drawStores.put(point, draw);
     }
 
-    public boolean updateDraw(Draw editDraw) {
+    public boolean updateDraw(Draw editDraw, String sessionId) {
         Draw draw = drawStores.get(new Point(editDraw.getX1(), editDraw.getY1()));
         if (draw == null) {
             log.info("No such circle=(x={},y={})", editDraw.getX1(), editDraw.getY1());
             throw new NoSuchElementException("Can't not update editDraw:No such editDraw.");
         }
 
-        return draw.updateDraw(editDraw);
+        return draw.updateDraw(editDraw, sessionId);
     }
 
     public List<Draw> findAll() {
         return drawStores.values().stream().toList();
+    }
+
+    public boolean selectDraw(Draw selectDraw, String sessionId) {
+        Draw draw = drawStores.get(new Point(selectDraw.getX1(), selectDraw.getY1()));
+        if (draw == null) {
+            log.info("No such circle=(x={},y={})", selectDraw.getX1(), selectDraw.getY1());
+            throw new NoSuchElementException("Can't not update editDraw:No such editDraw.");
+        }
+
+        return draw.updateDraw(selectDraw, sessionId);
     }
 }

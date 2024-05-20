@@ -15,7 +15,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
         @JsonSubTypes.Type(value = TextBox.class, name = "TEXTBOX")
 })
 public interface Draw {
-    boolean updateDraw(Draw editDraw);
+    boolean updateDraw(Draw editDraw, String sessionId);
+    boolean selectDraw(String sessionId);
     int getX1();
     int getY1();
 }

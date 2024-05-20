@@ -24,7 +24,11 @@ public class BoardService {
         drawRepository.saveDraw(draw);
     }
 
-    public boolean editDraw(Draw draw){
-        return drawRepository.updateDraw(draw);
+    public boolean editDraw(Draw draw, String sessionId){
+        return drawRepository.updateDraw(draw, sessionId);
+    }
+
+    public boolean selectDraw(Draw draw, String sessionId) {
+        return drawRepository.selectDraw(draw, sessionId);
     }
 }
