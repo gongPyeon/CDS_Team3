@@ -51,8 +51,8 @@ public class SwingClient {
         drawingPanel.logoutMessage(usrId);
     }
 
-    public void panelListDraw(List<Line> line, List<Circle> cir, List<Square> rec, List<TextBox> text){
-        drawingPanel.listDrawMessage(line, cir, rec, text);
+    public void panelListDraw(List<Draw> draw){
+        drawingPanel.listDrawMessage(draw);
     }
 
     public static void main(String[] args) throws IOException {
@@ -247,6 +247,8 @@ public class SwingClient {
                         if (input != null && !input.isEmpty()) {
                             try {
                                 int lineWidth = Integer.parseInt(input);
+                                if(lineWidth < 0) return;
+
                                 currentlineWidth = lineWidth;
                                 Graphics g = getGraphics();
                                 setWidth(g, false);
@@ -447,8 +449,10 @@ public class SwingClient {
             }
         }
 
-        public void listDrawMessage(List<Line> line, List<Circle> cir, List<Square> rec, List<TextBox> text){
-            //draw list로 받아야 received message를 돌리는데 !
+        public void listDrawMessage(List<Draw> draw){
+            for(int i=0; i<draw.size(); i++){
+                receivedMessage(draw.get(i));
+            }
         }
 
 

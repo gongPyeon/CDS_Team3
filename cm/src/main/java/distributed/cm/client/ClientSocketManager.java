@@ -25,7 +25,7 @@ public class ClientSocketManager {
     }
 
     public void draw(int x1, int y1, int x2, int y2) {
-        Line line1 = new Line(null, x1, y1, x2, y2, 1, "#000000");
+        Line line1 = new Line(x1, x2, y1, y2, 1, "#000000");
         LineMessage lineMessage = new LineMessage(1, 1, line1);
 
         try{
@@ -38,7 +38,7 @@ public class ClientSocketManager {
     }
 
     public void text(String input, int startX, int startY){
-        TextBox textBox = new TextBox(null, startX, startY, input, "#000000", 1);
+        TextBox textBox = new TextBox(startX, startY, input, "#000000", 1);
         TextBoxMessage textBoxMessage = new TextBoxMessage(1, 6, textBox);
 
         try{
@@ -51,7 +51,7 @@ public class ClientSocketManager {
 
 
     public void circle(int x1, int x2, int y1, int y2, int bold, String boldColor, String paintColor){
-        Circle circle = new Circle(null, x1, x2, y1, y2, bold, boldColor, 0, paintColor);
+        Circle circle = new Circle(x1, x2, y1, y2, bold, boldColor, 0, paintColor);
         CircleMessage circleMessage = new CircleMessage(1, 2, circle);
         try{
             String message = mapper.writeValueAsString(circleMessage);
@@ -62,7 +62,7 @@ public class ClientSocketManager {
     }
 
     public void circleEdit(int x1, int x2, int y1, int y2, int bold, String boldColor, String paintColor){
-        Circle circle = new Circle(null, x1, x2, y1, y2, bold, boldColor, 1, paintColor);
+        Circle circle = new Circle(x1, x2, y1, y2, bold, boldColor, 1, paintColor);
         CircleMessage circleMessage = new CircleMessage(1, 3, circle);
         try{
             String message = mapper.writeValueAsString(circleMessage);
@@ -74,7 +74,7 @@ public class ClientSocketManager {
     }
 
     public void rectangle(int x1, int x2, int y1, int y2, int bold, String boldColor, String paintColor){
-        Square square = new Square(null, x1, x2, y1, y2, bold, boldColor, 0, paintColor);
+        Square square = new Square(x1, x2, y1, y2, bold, boldColor, 0, paintColor);
         SquareMessage squareMessage = new SquareMessage(1, 4, square);
         try{
             String message = mapper.writeValueAsString(squareMessage);
@@ -85,7 +85,7 @@ public class ClientSocketManager {
     }
 
     public void rectangleEdit(int x1, int x2, int y1, int y2, int bold, String boldColor, String paintColor){
-        Square square = new Square(null, x1, x2, y1, y2, bold, boldColor, 1, paintColor);
+        Square square = new Square(x1, x2, y1, y2, bold, boldColor, 1, paintColor);
         SquareMessage squareMessage = new SquareMessage(1, 5, square);
         try{
             String message = mapper.writeValueAsString(squareMessage);
@@ -178,8 +178,7 @@ public class ClientSocketManager {
 
         public void onDrawListMessage(DrawListMessage message){
             SwingClient client = SwingClient.getClient();
-            //message타입이 무슨 뜻인지 확인하기
-            //리스트 넘기기?
+            client.panelListDraw(message.getDraw());
         }
     }
 
