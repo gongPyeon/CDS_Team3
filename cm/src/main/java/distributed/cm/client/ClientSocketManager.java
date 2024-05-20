@@ -25,7 +25,7 @@ public class ClientSocketManager {
     }
 
     public void draw(int x1, int y1, int x2, int y2) {
-        Line line1 = new Line(x1, y1, x2, y2, 1, "#000000");
+        Line line1 = new Line(x1, x2, y1, y2, 1, "#000000");
         LineMessage lineMessage = new LineMessage(1, 1, line1);
 
         try{
@@ -139,6 +139,8 @@ public class ClientSocketManager {
                     onDefaultMessage((DefaultMessage) socketMessage);
                 } else if (socketMessage instanceof DrawMessage){
                     onDrawMessage((DrawMessage) socketMessage);
+                }else if(socketMessage instanceof DrawListMessage){
+                    onDrawListMessage((DrawListMessage) socketMessage);
                 }
             } catch (JsonProcessingException e) {
                 log.info("error={}", e);
@@ -149,12 +151,22 @@ public class ClientSocketManager {
          * 다른 유저 입퇴장
          */
         public void onDefaultMessage(DefaultMessage message) {
+            //default message에서 받고 타입별로 나누는 형식인가?
             SwingClient client = SwingClient.getClient();
-            if(message.getEntry() == 0){
-                client.panelLogin(message.getUserId());
-            }else{
-                client.panelLogout(message.getUserId());
+            switch (message.getMessageType()){
+                case 0 :
+                    if(message.getEntry() == 0){
+                        client.panelLogin(message.getUserId());
+                    }else{
+                        client.panelLogout(message.getUserId());
+                    }
+                    break;
+                case 3 :
+                    client.panelLock();
             }
+
+
+
         }
 
         /**
@@ -170,6 +182,13 @@ public class ClientSocketManager {
                     client.panelEdit(message.getDraw());
             }
 
+        }
+
+        //메세지가 왔을때, (수정메세지) 접속중이라고 메세지 띄우기 => lock message 이어서 구현
+
+        public void onDrawListMessage(DrawListMessage message){
+            SwingClient client = SwingClient.getClient();
+            client.panelListDraw(message.getDraw());
         }
     }
 
