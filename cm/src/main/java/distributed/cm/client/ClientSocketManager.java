@@ -151,12 +151,22 @@ public class ClientSocketManager {
          * 다른 유저 입퇴장
          */
         public void onDefaultMessage(DefaultMessage message) {
+            //default message에서 받고 타입별로 나누는 형식인가?
             SwingClient client = SwingClient.getClient();
-            if(message.getEntry() == 0){
-                client.panelLogin(message.getUserId());
-            }else{
-                client.panelLogout(message.getUserId());
+            switch (message.getMessageType()){
+                case 0 :
+                    if(message.getEntry() == 0){
+                        client.panelLogin(message.getUserId());
+                    }else{
+                        client.panelLogout(message.getUserId());
+                    }
+                    break;
+                case 3 :
+                    client.panelLock();
             }
+
+
+
         }
 
         /**

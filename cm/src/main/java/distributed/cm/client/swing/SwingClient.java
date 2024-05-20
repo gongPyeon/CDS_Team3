@@ -51,9 +51,9 @@ public class SwingClient {
         drawingPanel.logoutMessage(usrId);
     }
 
-    public void panelListDraw(List<Draw> draw){
-        drawingPanel.listDrawMessage(draw);
-    }
+    public void panelListDraw(List<Draw> draw){ drawingPanel.listDrawMessage(draw); }
+
+    public void panelLock(){ drawingPanel.lockMessage(); }
 
     public static void main(String[] args) throws IOException {
         SwingClient swingClient = SwingClient.getClient();
@@ -464,12 +464,13 @@ public class SwingClient {
             JOptionPane.showMessageDialog(null, usrId+"님이 접속을 해제했습니다.", "알림", JOptionPane.INFORMATION_MESSAGE);
         }
 
+        public void lockMessage(){
+            JOptionPane.showMessageDialog(null, "다른 사용자가 수정중이므로 접속할 수 없습니다", "알림", JOptionPane.INFORMATION_MESSAGE);
+        }
+
     }
     enum DrawingMode {PENCIL, RECTANGLE, CIRCLE, TEXTBOX, SELLECT, NULL}
 
-//    public void lockMessage(){
-//        JOptionPane.showMessageDialog(null, "다른 사용자가 수정중이므로 접속할 수 없습니다", "알림", JOptionPane.INFORMATION_MESSAGE);
-//    }
     public String nameSetting() { // panel생성 전에 사용자 이름을 입력받는다
         String usrName = null;
         while (true) {
