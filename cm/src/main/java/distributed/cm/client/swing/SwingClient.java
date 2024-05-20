@@ -163,20 +163,28 @@ public class SwingClient {
             pencilButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
+
                     drawingMode = DrawingMode.PENCIL;
+                    startX = 0; startY = 0; endX = 0; endY = 0;
                 }
             });
 
             JButton RecButton = new JButton("Rectangle");
             RecButton.addActionListener(new ActionListener() {
                 @Override
-                public void actionPerformed(ActionEvent e) { drawingMode = DrawingMode.RECTANGLE; startX = endX; startY = endY;}
+                public void actionPerformed(ActionEvent e) {
+                    drawingMode = DrawingMode.RECTANGLE;
+                    startX = 0; startY = 0; endX = 0; endY = 0;
+                }
             });
 
             JButton cirButton = new JButton("Circle");
             cirButton.addActionListener(new ActionListener() {
                 @Override
-                public void actionPerformed(ActionEvent e) { drawingMode = DrawingMode.CIRCLE; startX = endX; startY = endY;}
+                public void actionPerformed(ActionEvent e) {
+                    drawingMode = DrawingMode.CIRCLE;
+                    startX = 0; startY = 0; endX = 0; endY = 0;
+                }
             });
 
             JButton textButton = new JButton("Textbox");
@@ -285,6 +293,8 @@ public class SwingClient {
             }
 
             if(drawingMode == DrawingMode.RECTANGLE || drawingMode == DrawingMode.CIRCLE){
+                if( startX == 0 && startY == 0 && endX == 0 && endY == 0)
+                    return;
                 if(drawingMode == DrawingMode.RECTANGLE) {
                     SwingRectangle rectangle = new SwingRectangle(startX, endX, startY, endY);
                     rectangle.drawingResize();
