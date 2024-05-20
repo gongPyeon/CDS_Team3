@@ -50,9 +50,9 @@ public class ClientSocketManager {
     }
 
 
-    public void circle(int x1, int x2, int y1, int y2, int bold, String boldColor, String paintColor){
+    public void circle(int x1, int x2, int y1, int y2, int bold, String boldColor, String paintColor, int drawType){
         Circle circle = new Circle(x1, x2, y1, y2, bold, boldColor, 0, paintColor);
-        CircleMessage circleMessage = new CircleMessage(1, 2, circle);
+        CircleMessage circleMessage = new CircleMessage(1, drawType, circle);
         try{
             String message = mapper.writeValueAsString(circleMessage);
             clientSocket.sendMessage(message);
@@ -73,9 +73,9 @@ public class ClientSocketManager {
 
     }
 
-    public void rectangle(int x1, int x2, int y1, int y2, int bold, String boldColor, String paintColor){
+    public void rectangle(int x1, int x2, int y1, int y2, int bold, String boldColor, String paintColor, int drawType){
         Square square = new Square(x1, x2, y1, y2, bold, boldColor, 0, paintColor);
-        SquareMessage squareMessage = new SquareMessage(1, 4, square);
+        SquareMessage squareMessage = new SquareMessage(1, drawType, square);
         try{
             String message = mapper.writeValueAsString(squareMessage);
             clientSocket.sendMessage(message);

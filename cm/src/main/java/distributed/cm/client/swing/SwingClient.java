@@ -122,14 +122,14 @@ public class SwingClient {
                             rectangle.drawingResize();
                             rectangle.draw(g);
                             shapes.add(rectangle);
-                            clientSocketManager.rectangle(rectangle.getStartX(), rectangle.getEndX(), rectangle.getStartY(), rectangle.getEndY(), rectangle.getLineWidth(), rectangle.getLineColor(), rectangle.getFillColor());
+                            clientSocketManager.rectangle(rectangle.getStartX(), rectangle.getEndX(), rectangle.getStartY(), rectangle.getEndY(), rectangle.getLineWidth(), rectangle.getLineColor(), rectangle.getFillColor(), 4);
 
                         } else if (drawingMode == DrawingMode.CIRCLE) {
                             SwingCircle circle = new SwingCircle(startX, endX, startY, endY);
                             circle.drawingResize();
                             circle.draw(g);
                             shapes.add(circle);
-                            clientSocketManager.circle(circle.getStartX(), circle.getEndX(), circle.getStartY(), circle.getEndY(), circle.getLineWidth(), circle.getLineColor(), circle.getFillColor());
+                            clientSocketManager.circle(circle.getStartX(), circle.getEndX(), circle.getStartY(), circle.getEndY(), circle.getLineWidth(), circle.getLineColor(), circle.getFillColor(), 2);
                         }
                         allowColorButton = false;
                     } else if (drawingMode == DrawingMode.PENCIL) {
@@ -299,11 +299,12 @@ public class SwingClient {
                     SwingRectangle rectangle = new SwingRectangle(startX, endX, startY, endY);
                     rectangle.drawingResize();
                     rectangle.draw(g);
-                    clientSocketManager.rectangle(rectangle.getStartX(), rectangle.getEndX(), rectangle.getStartY(), rectangle.getEndY(), rectangle.getLineWidth(), rectangle.getLineColor(), rectangle.getFillColor());
+                    clientSocketManager.rectangle(rectangle.getStartX(), rectangle.getEndX(), rectangle.getStartY(), rectangle.getEndY(), rectangle.getLineWidth(), rectangle.getLineColor(), rectangle.getFillColor(), 10);
                 }else if(drawingMode == DrawingMode.CIRCLE){
                     SwingCircle circle = new SwingCircle(startX, endX, startY, endY);
                     circle.drawingResize();
                     circle.draw(g);
+                    clientSocketManager.circle(circle.getStartX(), circle.getEndX(), circle.getStartY(), circle.getEndY(), circle.getLineWidth(), circle.getLineColor(), circle.getFillColor(), 9);
                 }
             }
 
