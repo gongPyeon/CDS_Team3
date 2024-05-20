@@ -76,6 +76,8 @@ public class ReceiveMessageHandler {
                     String responseMessage = clientResponseParser.createEditErrorMessage();
                     messageSender.sendMessage(sessionId, responseMessage);
                 }
+            case 9,10:
+                messageSender.sendMessageAllSocket(payload, sessionId);
         }
     }
 }
