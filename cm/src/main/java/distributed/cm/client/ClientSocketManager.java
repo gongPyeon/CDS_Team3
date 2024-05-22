@@ -180,6 +180,9 @@ public class ClientSocketManager {
                     break;
                 case 3,5 :
                     client.panelEdit(message.getDraw());
+                    break;
+                case 9,10:
+                    client.paneldrag(message.getDraw());
             }
 
         }
