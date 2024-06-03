@@ -93,7 +93,7 @@ public class SwingClient {
                 public void mousePressed(MouseEvent e) { // 마우스를 클릭했을 때 발생하는 이벤트
                     startX = e.getX();
                     startY = e.getY();
-
+                    logger.info("drawtype:{}", drawingMode);
                     if(drawingMode == DrawingMode.TEXTBOX){ // text인 경우 팝업을 통해 입력받고 그린다
                         SwingText text = new SwingText(startX, startY);
                         Graphics g = getGraphics();
@@ -168,7 +168,7 @@ public class SwingClient {
                 public void actionPerformed(ActionEvent e) {
 
                     drawingMode = DrawingMode.PENCIL;
-                    startX = 0; startY = 0; endX = 0; endY = 0; //drag = false;
+                    startX = 0; startY = 0; endX = 0; endY = 0;
                 }
             });
 
@@ -177,7 +177,7 @@ public class SwingClient {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     drawingMode = DrawingMode.RECTANGLE;
-                    startX = 0; startY = 0; endX = 0; endY = 0; //drag = false;
+                    startX = 0; startY = 0; endX = 0; endY = 0;
                 }
             });
 
@@ -186,7 +186,7 @@ public class SwingClient {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     drawingMode = DrawingMode.CIRCLE;
-                    startX = 0; startY = 0; endX = 0; endY = 0; //drag = false;
+                    startX = 0; startY = 0; endX = 0; endY = 0;
                 }
             });
 
@@ -285,6 +285,9 @@ public class SwingClient {
         private String currentFillColor = null;
 
         private String currentLineColor = "#000000";
+        private boolean rec_drag = false, cir_drag = false;
+        private int prevStartX = -1, prevStartY = -1, prevEndX = -1, prevEndY = -1;
+        private int prevCircleStartX = -1, prevCircleStartY = -1, prevCircleEndX = -1, prevCircleEndY = -1;
         @Override
         protected void paintComponent(Graphics g) { //
             super.paintComponent(g);
@@ -295,34 +298,95 @@ public class SwingClient {
                 }
             }
 
-            if(drawingMode == DrawingMode.R_DRAG) {
+            if(rec_drag) {
                 SwingRectangle rectangle = new SwingRectangle(startX, endX, startY, endY);
                 rectangle.drawingResize();
                 rectangle.draw(g);
+                rec_drag = false;
                 return;
-            }else if(drawingMode == DrawingMode.C_DRAG) {
+            }else if(cir_drag) {
                 SwingCircle circle = new SwingCircle(startX, endX, startY, endY);
                 circle.drawingResize();
                 circle.draw(g);
+                cir_drag = false;
                 return;
             }
 
-
-            if(drawingMode == DrawingMode.RECTANGLE || drawingMode == DrawingMode.CIRCLE){
-                if( startX == 0 && startY == 0 && endX == 0 && endY == 0)
+            if (drawingMode == DrawingMode.RECTANGLE || drawingMode == DrawingMode.CIRCLE) {
+                if (startX == 0 && startY == 0 && endX == 0 && endY == 0)
                     return;
-                if(drawingMode == DrawingMode.RECTANGLE) {
+
+                if (drawingMode == DrawingMode.RECTANGLE) {
                     SwingRectangle rectangle = new SwingRectangle(startX, endX, startY, endY);
                     rectangle.drawingResize();
                     rectangle.draw(g);
-                    clientSocketManager.rectangle(rectangle.getStartX(), rectangle.getEndX(), rectangle.getStartY(), rectangle.getEndY(), rectangle.getLineWidth(), rectangle.getLineColor(), rectangle.getFillColor(), 10);
-                }else if(drawingMode == DrawingMode.CIRCLE) {
+
+                    // 이전 상태와 현재 상태를 비교하여 변경된 경우에만 메시지를 전송합니다.
+                    if (startX != prevStartX || startY != prevStartY || endX != prevEndX || endY != prevEndY) {
+                        try {
+                            Thread.sleep(10);
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+                        clientSocketManager.rectangle(rectangle.getStartX(), rectangle.getEndX(), rectangle.getStartY(), rectangle.getEndY(),
+                                rectangle.getLineWidth(), rectangle.getLineColor(), rectangle.getFillColor(), 10);
+
+                        // 이전 상태를 현재 상태로 업데이트
+                        prevStartX = startX;
+                        prevStartY = startY;
+                        prevEndX = endX;
+                        prevEndY = endY;
+                    }
+
+                } else if (drawingMode == DrawingMode.CIRCLE) {
                     SwingCircle circle = new SwingCircle(startX, endX, startY, endY);
                     circle.drawingResize();
                     circle.draw(g);
-                    clientSocketManager.circle(circle.getStartX(), circle.getEndX(), circle.getStartY(), circle.getEndY(), circle.getLineWidth(), circle.getLineColor(), circle.getFillColor(), 9);
+
+                    // 이전 상태와 현재 상태를 비교하여 변경된 경우에만 메시지를 전송
+                    if (startX != prevCircleStartX || startY != prevCircleStartY || endX != prevCircleEndX || endY != prevCircleEndY) {
+                        try {
+                            Thread.sleep(10);
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+                        clientSocketManager.circle(circle.getStartX(), circle.getEndX(), circle.getStartY(), circle.getEndY(),
+                                circle.getLineWidth(), circle.getLineColor(), circle.getFillColor(), 9);
+
+                        // 이전 상태를 현재 상태로 업데이트합니다.
+                        prevCircleStartX = startX;
+                        prevCircleStartY = startY;
+                        prevCircleEndX = endX;
+                        prevCircleEndY = endY;
+                    }
                 }
             }
+
+//            if(drawingMode == DrawingMode.RECTANGLE || drawingMode == DrawingMode.CIRCLE){
+//                if( startX == 0 && startY == 0 && endX == 0 && endY == 0)
+//                    return;
+//                if(drawingMode == DrawingMode.RECTANGLE) {
+//                    SwingRectangle rectangle = new SwingRectangle(startX, endX, startY, endY);
+//                    rectangle.drawingResize();
+//                    rectangle.draw(g);
+//                    try {
+//                        Thread.sleep(10);
+//                    } catch (InterruptedException e) {
+//                        throw new RuntimeException(e);
+//                    }
+//                    clientSocketManager.rectangle(rectangle.getStartX(), rectangle.getEndX(), rectangle.getStartY(), rectangle.getEndY(), rectangle.getLineWidth(), rectangle.getLineColor(), rectangle.getFillColor(), 10);
+//                }else if(drawingMode == DrawingMode.CIRCLE) {
+//                    SwingCircle circle = new SwingCircle(startX, endX, startY, endY);
+//                    circle.drawingResize();
+//                    circle.draw(g);
+//                    try {
+//                        Thread.sleep(10);
+//                    } catch (InterruptedException e) {
+//                        throw new RuntimeException(e);
+//                    }
+//                    clientSocketManager.circle(circle.getStartX(), circle.getEndX(), circle.getStartY(), circle.getEndY(), circle.getLineWidth(), circle.getLineColor(), circle.getFillColor(), 9);
+//                }
+//            }
 
         }
 
@@ -371,7 +435,7 @@ public class SwingClient {
         public void setFill(Graphics g, boolean modified){
 
             SwingShape parent = shapes.get(shapeIndex);
-            logger.info("shape index: {}", shapeIndex);
+            //logger.info("shape index: {}", shapeIndex);
             //logger.info("dragg~!{}", drag); //drag말고..
             if(parent instanceof SwingCircle){
                 SwingCircle cir = (SwingCircle) parent;
@@ -444,7 +508,7 @@ public class SwingClient {
                 shapes.add(new SwingText(text.getText(), text.getX1(), text.getY1()));
                 drawingMode = DrawingMode.TEXTBOX;
             }
-            logger.info("Received drawingmode : {}", drawingMode);
+            //logger.info("Received drawingmode : {}", drawingMode);
             Graphics g = getGraphics();
             shapes.get(shapes.size()-1).draw(g);
             repaint();
@@ -452,24 +516,24 @@ public class SwingClient {
 
         public void draggMessage(Draw draw){
             if(draw instanceof Square) {
-                logger.info("square안 !");
+                //logger.info("square안 !");
                 Square rec = (Square) draw;
                 startX = rec.getX1();
                 endX = rec.getX2();
                 startY = rec.getY1();
                 endY = rec.getY2();
-                drawingMode = DrawingMode.R_DRAG;
+                rec_drag = true;
             }else if(draw instanceof Circle){
-                logger.info("circle안 !");
+                //logger.info("circle안 !");
                 Circle cir = (Circle) draw;
                 startX = cir.getX1();
                 endX = cir.getX2();
                 startY = cir.getY1();
                 endY = cir.getY2();
-                drawingMode = DrawingMode.C_DRAG;
+                cir_drag = true;
             }
             repaint();
-            logger.info("drag drawingmode : {}", drawingMode);
+            //logger.info("drag drawingmode : {}", drawingMode);
         }
 
 
@@ -482,7 +546,7 @@ public class SwingClient {
                 currentFillColor = cir.getPaintColor(); // 바뀐 사항들 가져오기
                 currentLineColor = cir.getBoldColor();
                 currentlineWidth = cir.getBold();
-                logger.info("fill:{}, line:{}, width{}", currentFillColor, currentLineColor, currentlineWidth);
+                //logger.info("fill:{}, line:{}, width{}", currentFillColor, currentLineColor, currentlineWidth);
 
                 Graphics g = getGraphics();
                 setFill(g, true);
@@ -505,7 +569,7 @@ public class SwingClient {
                 setWidth(g, true);
 
             }
-            logger.info("Modify drawingmode : {}", drawingMode);
+            //logger.info("Modify drawingmode : {}", drawingMode);
         }
 
         public void listDrawMessage(List<Draw> draw){
@@ -528,7 +592,7 @@ public class SwingClient {
         }
 
     }
-    enum DrawingMode {PENCIL, RECTANGLE, CIRCLE, TEXTBOX, SELLECT, NULL, R_DRAG, C_DRAG}
+    enum DrawingMode {PENCIL, RECTANGLE, CIRCLE, TEXTBOX, SELLECT, NULL}
 
     public String nameSetting() { // panel생성 전에 사용자 이름을 입력받는다
         String usrName = null;
