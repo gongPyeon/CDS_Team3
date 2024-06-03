@@ -9,6 +9,8 @@ import org.springframework.web.socket.WebSocketSession;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -16,38 +18,54 @@ import java.util.List;
 public class MessageSender {
 
     private final SessionRepository sessionRepository;
+    private final Lock lock = new ReentrantLock();
 
     public void sendMessageAllSocket(String message, String exceptId) {
-        List<WebSocketSession> sessions = sessionRepository.findAllSessions();
-        for (WebSocketSession session : sessions) {
-            try {
-                if(session.getId().equals(exceptId)) continue;
-                session.sendMessage(new TextMessage(message));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+        lock.lock();
+        try {
+            List<WebSocketSession> sessions = sessionRepository.findAllSessions();
+            for (WebSocketSession session : sessions) {
+                try {
+                    if(session.getId().equals(exceptId)) continue;
+                    session.sendMessage(new TextMessage(message));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
+        } finally {
+            lock.unlock();
         }
     }
 
     public void sendMessageAllSocket(String message) {
-        List<WebSocketSession> sessions = sessionRepository.findAllSessions();
-        TextMessage textMessage = new TextMessage(message);
+        lock.lock();
+        try {
+            List<WebSocketSession> sessions = sessionRepository.findAllSessions();
+            TextMessage textMessage = new TextMessage(message);
 
-        for (WebSocketSession session : sessions) {
-            try {
-                session.sendMessage(textMessage);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+            for (WebSocketSession session : sessions) {
+                try {
+                    session.sendMessage(textMessage);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
+        } finally {
+            lock.unlock();
         }
     }
 
     public void sendMessage(String sessionId, String message){
-        WebSocketSession session = sessionRepository.findSession(sessionId);
+        lock.lock();
         try {
-            session.sendMessage(new TextMessage(message));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+            WebSocketSession session = sessionRepository.findSession(sessionId);
+            try {
+                session.sendMessage(new TextMessage(message));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        } finally {
+            lock.unlock();
         }
     }
 }
