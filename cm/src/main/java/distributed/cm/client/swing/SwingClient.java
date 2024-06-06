@@ -93,7 +93,7 @@ public class SwingClient {
                 public void mousePressed(MouseEvent e) { // 마우스를 클릭했을 때 발생하는 이벤트
                     startX = e.getX();
                     startY = e.getY();
-                    logger.info("drawtype:{}", drawingMode);
+                    //logger.info("drawtype:{}", drawingMode);
                     if(drawingMode == DrawingMode.TEXTBOX){ // text인 경우 팝업을 통해 입력받고 그린다
                         SwingText text = new SwingText(startX, startY);
                         Graphics g = getGraphics();
@@ -205,6 +205,24 @@ public class SwingClient {
                 public void actionPerformed(ActionEvent e) { drawingMode = DrawingMode.SELLECT;}
             });
 
+            JButton storeBtn = new JButton("Store");
+            storeBtn.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    clientSocketManager.store();
+                }
+            });
+
+            JButton loadBtn = new JButton("load");
+            loadBtn.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    clientSocketManager.load();
+                }
+            });
+
+            add(storeBtn);
+            add(loadBtn);
             add(pencilButton); // 버튼을 패널에 부착한다
             add(RecButton);
             add(cirButton);

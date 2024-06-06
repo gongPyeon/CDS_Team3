@@ -120,6 +120,26 @@ public class ClientSocketManager {
         }
     }
 
+    public void load(){
+        Map<String, Object> userMessage = Map.of("messageType", 2);
+        try{
+            String message = mapper.writeValueAsString(userMessage);
+            clientSocket.sendMessage(message);
+        }catch (JsonProcessingException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void store(){
+        Map<String, Object> userMessage = Map.of("messageType", 3);
+        try{
+            String message = mapper.writeValueAsString(userMessage);
+            clientSocket.sendMessage(message);
+        }catch (JsonProcessingException e){
+            e.printStackTrace();
+        }
+    }
+
     @Slf4j
     static class MessageHandler implements jakarta.websocket.MessageHandler.Whole<String> {
         private ObjectMapper objectMapper = new ObjectMapper();
@@ -161,7 +181,7 @@ public class ClientSocketManager {
                         client.panelLogout(message.getUserId());
                     }
                     break;
-                case 3 :
+                case 4 :
                     client.panelLock();
             }
 
