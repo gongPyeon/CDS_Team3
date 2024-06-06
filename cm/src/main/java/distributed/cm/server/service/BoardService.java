@@ -20,6 +20,10 @@ public class BoardService {
         return drawRepository.findAll();
     }
 
+    public List<Draw> loadFormalBoard(){
+        return drawRepository.findFormalAll();
+    }
+
     public void saveBoard(){
         drawRepository.saveAll();
     }

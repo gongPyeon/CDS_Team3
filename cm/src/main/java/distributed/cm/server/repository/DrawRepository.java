@@ -66,8 +66,11 @@ public class DrawRepository {
         }
     }
 
+    public List<Draw> findFormalAll() {
+        return formerStores.values().stream().toList();
+    }
+
     public void clearAll(){
         drawStores.clear();
     }
-
 }

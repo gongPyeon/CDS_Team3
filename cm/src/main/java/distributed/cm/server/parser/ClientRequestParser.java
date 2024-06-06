@@ -47,7 +47,7 @@ public class ClientRequestParser {
     public Message parse(String payload) throws JsonProcessingException {
         DefaultMessage defaultMessage = objectMapper.readValue(payload, DefaultMessage.class);
 
-        if(defaultMessage.getMessageType() == 0) {
+        if(defaultMessage.getMessageType() == 0 || defaultMessage.getMessageType() == 2 || defaultMessage.getMessageType() == 3) {
             return defaultMessage;
         } else if(defaultMessage.getMessageType() == 2){
             return objectMapper.readValue(payload, DrawListMessage.class);
