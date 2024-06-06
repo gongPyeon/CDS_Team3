@@ -1,20 +1,17 @@
 package distributed.cm.server.repository;
 
-import distributed.cm.common.domain.Draw;
-import distributed.cm.common.domain.Point;
+import distributed.cm.common.domain.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 @Slf4j
 @Repository
 public class DrawRepository {
 
-    private final Map<Point, Draw> drawStores = new LinkedHashMap<>();
+    private final Map<Point, Draw> drawStores = Collections.synchronizedMap(new LinkedHashMap<>());
+    private final Map<Point, Draw> formerStores  = Collections.synchronizedMap(new LinkedHashMap<>());
 
     public void saveDraw(Draw draw) {
         Point point = new Point(draw.getX1(), draw.getY1());
@@ -44,4 +41,33 @@ public class DrawRepository {
 
         return draw.updateDraw(selectDraw, sessionId);
     }
+
+    public void saveAll(){
+        synchronized (drawStores){
+            for (Draw draw : drawStores.values()) {
+                if(draw instanceof Line){
+                    Line line = (Line) draw;
+                    Line copyLine = new Line(line);
+                    formerStores.put(new Point(line.getX1(), line.getY1()), copyLine);
+                } else if (draw instanceof Circle) {
+                    Circle circle = (Circle) draw;
+                    Circle copyCircle = new Circle(circle);
+                    formerStores.put(new Point(copyCircle.getX1(), copyCircle.getY1()), copyCircle);
+                } else if (draw instanceof Square) {
+                    Square square = (Square) draw;
+                    Square copySquare = new Square(square);
+                    formerStores.put(new Point(copySquare.getX1(), copySquare.getY1()), copySquare);
+                } else if (draw instanceof TextBox) {
+                    TextBox textBox = (TextBox) draw;
+                    TextBox copyTextBox = new TextBox(textBox);
+                    formerStores.put(new Point(copyTextBox.getX1(), copyTextBox.getY1()), copyTextBox);
+                }
+            }
+        }
+    }
+
+    public void clearAll(){
+        drawStores.clear();
+    }
+
 }

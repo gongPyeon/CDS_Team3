@@ -28,6 +28,15 @@ public class Line implements Draw{
         this.boldColor = boldColor;
     }
 
+    public Line(Line line) {
+        this.x1 = line.getX1();
+        this.x2 = line.getX2();
+        this.y1 = line.getY1();
+        this.y2 = line.getY2();
+        this.bold = line.getBold();
+        this.boldColor = line.getBoldColor();
+    }
+
     @Override
     public boolean updateDraw(Draw editDraw, String sessionId){
         Line line = (Line) editDraw;

@@ -20,6 +20,14 @@ public class BoardService {
         return drawRepository.findAll();
     }
 
+    public void saveBoard(){
+        drawRepository.saveAll();
+    }
+
+    public void clearBoard() {
+        drawRepository.clearAll();
+    }
+
     public void saveDraw(Draw draw){
         drawRepository.saveDraw(draw);
     }

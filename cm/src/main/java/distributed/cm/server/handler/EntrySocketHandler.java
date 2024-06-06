@@ -5,6 +5,7 @@ import distributed.cm.server.parser.ClientResponseParser;
 import distributed.cm.server.repository.SessionRepository;
 import distributed.cm.server.repository.UserRepository;
 import distributed.cm.server.responser.MessageSender;
+import distributed.cm.server.service.BoardService;
 import distributed.cm.server.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +22,7 @@ public class EntrySocketHandler {
     private final ClientResponseParser clientResponseParser;
     private final UserService userService;
     private final MessageSender messageSender;
+    private final BoardService boardService;
 
     private final SessionRepository sessionRepository;
 
@@ -35,6 +37,10 @@ public class EntrySocketHandler {
             String exitUserId = userService.userExit(sessionId);
             String closeSocketMessage = clientResponseParser.createCloseSocketMessage(exitUserId);
             messageSender.sendMessageAllSocket(closeSocketMessage);
+        }
+
+        if (sessionRepository.isEmpty()){
+            boardService.clearBoard();
         }
     }
 }

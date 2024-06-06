@@ -29,4 +29,8 @@ public class SessionRepository {
     public WebSocketSession findSession(String sessionId){
         return sessionStore.get(sessionId);
     }
+
+    public boolean isEmpty(){
+        return sessionStore.isEmpty();
+    }
 }
