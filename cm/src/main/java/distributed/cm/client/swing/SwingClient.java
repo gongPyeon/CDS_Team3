@@ -217,6 +217,7 @@ public class SwingClient {
             loadBtn.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
+                    drawingMode = DrawingMode.LOAD;
                     clientSocketManager.load();
                 }
             });
@@ -339,7 +340,7 @@ public class SwingClient {
                     rectangle.drawingResize();
                     rectangle.draw(g);
 
-                    // 이전 상태와 현재 상태를 비교하여 변경된 경우에만 메시지를 전송합니다.
+                    // 이전 상태와 현재 상태를 비교하여 변경된 경우에만 메시지를 전송
                     if (startX != prevStartX || startY != prevStartY || endX != prevEndX || endY != prevEndY) {
                         try {
                             Thread.sleep(10);
@@ -591,6 +592,9 @@ public class SwingClient {
         }
 
         public void listDrawMessage(List<Draw> draw){
+            if(draw.size() == 0 && drawingMode == DrawingMode.LOAD){
+                JOptionPane.showMessageDialog(null, "저장한 그림판 정보가 없습니다", "알림", JOptionPane.INFORMATION_MESSAGE);
+            }
             for(int i=0; i<draw.size(); i++){
                 receivedMessage(draw.get(i));
             }
@@ -610,7 +614,7 @@ public class SwingClient {
         }
 
     }
-    enum DrawingMode {PENCIL, RECTANGLE, CIRCLE, TEXTBOX, SELLECT, NULL}
+    enum DrawingMode {PENCIL, RECTANGLE, CIRCLE, TEXTBOX, SELLECT, NULL, LOAD}
 
     public String nameSetting() { // panel생성 전에 사용자 이름을 입력받는다
         String usrName = null;

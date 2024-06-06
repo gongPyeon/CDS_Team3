@@ -10,13 +10,17 @@ import distributed.cm.common.domain.TextBox;
 import distributed.cm.common.message.*;
 import distributed.cm.server.parser.*;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Map;
+
 
 @Slf4j
 public class ClientSocketManager {
     private final ClientSocket clientSocket;
     private final ObjectMapper mapper;
+    private static final Logger logger = LoggerFactory.getLogger(SwingClient.class);
 
     public ClientSocketManager() {
         clientSocket = new ClientSocket();
@@ -156,11 +160,9 @@ public class ClientSocketManager {
                 log.info("onMessage={}", message);
                 Message socketMessage = clientRequestParser.parse(message);
                 if (socketMessage instanceof DefaultMessage) {
-                    onDefaultMessage((DefaultMessage) socketMessage);
+                    onDefaultMessage(message);
                 } else if (socketMessage instanceof DrawMessage){
-                    onDrawMessage((DrawMessage) socketMessage);
-                }else if(socketMessage instanceof DrawListMessage){
-                    onDrawListMessage((DrawListMessage) socketMessage);
+                    onDrawMessage((DrawMessage)socketMessage);
                 }
             } catch (JsonProcessingException e) {
                 log.info("error={}", e);
@@ -170,8 +172,11 @@ public class ClientSocketManager {
         /**
          * 다른 유저 입퇴장
          */
-        public void onDefaultMessage(DefaultMessage message) {
+        public void onDefaultMessage(String msg) throws JsonProcessingException {
             //default message에서 받고 타입별로 나누는 형식인가?
+            Message socketMessage = clientRequestParser.parse(msg);
+            DefaultMessage message = (DefaultMessage)socketMessage;
+
             SwingClient client = SwingClient.getClient();
             switch (message.getMessageType()){
                 case 0 :
@@ -180,6 +185,11 @@ public class ClientSocketManager {
                     }else{
                         client.panelLogout(message.getUserId());
                     }
+                    break;
+                case 2:
+                    logger.info("load");
+                    DrawListMessage drawlistmessage = clientRequestParser.parseLoadMessage(msg);
+                    onDrawListMessage(drawlistmessage);
                     break;
                 case 4 :
                     client.panelLock();
