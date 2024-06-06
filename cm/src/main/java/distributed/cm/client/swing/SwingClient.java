@@ -596,6 +596,7 @@ public class SwingClient {
             if(draw.size() == 0 && drawingMode == DrawingMode.LOAD){
                 JOptionPane.showMessageDialog(null, "저장한 그림판 정보가 없습니다", "알림", JOptionPane.INFORMATION_MESSAGE);
             }
+            shapes.clear();
             for(int i=0; i<draw.size(); i++){
                 receivedMessage(draw.get(i));
             }
