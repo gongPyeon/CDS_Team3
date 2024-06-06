@@ -43,6 +43,7 @@ public class DrawRepository {
     }
 
     public void saveAll(){
+        formerStores.clear();
         synchronized (drawStores){
             for (Draw draw : drawStores.values()) {
                 if(draw instanceof Line){

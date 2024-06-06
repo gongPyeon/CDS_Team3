@@ -10,6 +10,8 @@ import java.awt.event.*;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import distributed.cm.common.domain.Circle;
 import distributed.cm.common.domain.Line;
@@ -78,7 +80,6 @@ public class SwingClient {
     }
 
     class DrawingPanel extends JPanel { //drawing panel을 만든다
-
         private ArrayList<SwingShape> shapes = new ArrayList<>();
         private int shapeIndex = 0;
         private int startX, startY, endX, endY; // 시작점, 끝점
