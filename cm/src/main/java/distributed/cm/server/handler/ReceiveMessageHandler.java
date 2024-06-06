@@ -52,7 +52,13 @@ public class ReceiveMessageHandler {
     }
 
     private void userEntryHandle(String sessionId, DefaultMessage message, String payload) {
-        if(message.getEntry() == 0) userService.userEnter(sessionId, message);
+        if(message.getEntry() == 0) {
+            userService.userEnter(sessionId, message);
+
+            List<Draw> draws = boardService.loadBoard();
+            String loadDrawMessage = clientResponseParser.createLoadDrawMessage(draws);
+            messageSender.sendMessage(sessionId, loadDrawMessage);
+        }
         else if (message.getEntry() == 1) userService.userExit(sessionId);
 
         messageSender.sendMessageAllSocket(payload, sessionId); //유저 입장 메세지 -> 해당 유저 제외한 모든 유저
@@ -87,7 +93,7 @@ public class ReceiveMessageHandler {
 
     private void loadSaveHandle(String sessionId, DefaultMessage message, String payload){
         if(message.getMessageType() == 2){
-            List<Draw> draws = boardService.loadBoard();
+            List<Draw> draws = boardService.loadFormalBoard();
             String responseMessage = clientResponseParser.createLoadDrawMessage(draws);
             messageSender.sendMessageAllSocket(responseMessage);
         }else if (message.getMessageType() == 3){
