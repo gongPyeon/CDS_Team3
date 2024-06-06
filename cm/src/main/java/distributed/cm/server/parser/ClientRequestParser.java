@@ -49,11 +49,13 @@ public class ClientRequestParser {
 
         if(defaultMessage.getMessageType() == 0 || defaultMessage.getMessageType() == 2 || defaultMessage.getMessageType() == 3) {
             return defaultMessage;
-        } else if(defaultMessage.getMessageType() == 2){
-            return objectMapper.readValue(payload, DrawListMessage.class);
         }
 
         DrawParser drawParser = drawParserMap.get(defaultMessage.getDrawType());
         return drawParser.parse(payload);
+    }
+
+    public DrawListMessage parseLoadMessage(String payload) throws JsonProcessingException {
+        return objectMapper.readValue(payload, DrawListMessage.class);
     }
 }
