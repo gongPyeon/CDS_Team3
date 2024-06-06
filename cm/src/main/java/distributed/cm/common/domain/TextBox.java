@@ -27,6 +27,14 @@ public class TextBox implements Draw{
         this.bold = bold;
     }
 
+    public TextBox(TextBox textBox){
+        this.x1 = textBox.getX1();
+        this.y1 = textBox.getY1();
+        this.text = textBox.getText();
+        this.fontColor = textBox.getFontColor();
+        this.bold = textBox.getBold();
+    }
+
     @Override
     public boolean updateDraw(Draw editDraw, String sessionId){
         TextBox textBox = (TextBox) editDraw;

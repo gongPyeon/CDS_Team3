@@ -34,7 +34,15 @@ public class ReceiveMessageHandler {
         try {
             Message message = clientRequestParser.parse(payload);
             if (message instanceof DefaultMessage) {
-                userEntryHandle(sessionId, (DefaultMessage) message, payload);
+                DefaultMessage defaultMessage = (DefaultMessage) message;
+                switch (defaultMessage.getMessageType()){
+                    case 0:
+                        userEntryHandle(sessionId, defaultMessage, payload);
+                        break;
+                    case 2, 3:
+                        loadSaveHandle(sessionId, defaultMessage, payload);
+                        break;
+                }
             } else {
                 drawMessageHandle((DrawMessage) message, sessionId, payload);
             }
@@ -47,10 +55,6 @@ public class ReceiveMessageHandler {
         if(message.getEntry() == 0) userService.userEnter(sessionId, message);
         else if (message.getEntry() == 1) userService.userExit(sessionId);
 
-        List<Draw> draws = boardService.loadBoard();
-
-        String loadMessage = clientResponseParser.createLoadDrawMessage(draws);
-        messageSender.sendMessage(sessionId, loadMessage); //로드 메세지
         messageSender.sendMessageAllSocket(payload, sessionId); //유저 입장 메세지 -> 해당 유저 제외한 모든 유저
     }
 
@@ -78,6 +82,16 @@ public class ReceiveMessageHandler {
                 }
             case 9,10:
                 messageSender.sendMessageAllSocket(payload, sessionId);
+        }
+    }
+
+    private void loadSaveHandle(String sessionId, DefaultMessage message, String payload){
+        if(message.getMessageType() == 2){
+            List<Draw> draws = boardService.loadBoard();
+            String responseMessage = clientResponseParser.createLoadDrawMessage(draws);
+            messageSender.sendMessageAllSocket(responseMessage);
+        }else if (message.getMessageType() == 3){
+            boardService.saveBoard();
         }
     }
 }

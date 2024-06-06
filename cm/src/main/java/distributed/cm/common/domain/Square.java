@@ -39,6 +39,17 @@ public class Square implements Draw{
         this.paintColor = paintColor;
     }
 
+    public Square(Square square) {
+        this.x1 = square.getX1();
+        this.x2 = square.getX2();
+        this.y1 = square.getY1();
+        this.y2 = square.getY2();
+        this.bold = square.getBold();
+        this.boldColor = square.getBoldColor();
+        this.isPaint = square.getIsPaint();
+        this.paintColor = square.getPaintColor();
+    }
+
     @Override
     public boolean updateDraw(Draw editDraw, String sessionId){
         Square square = (Square) editDraw;

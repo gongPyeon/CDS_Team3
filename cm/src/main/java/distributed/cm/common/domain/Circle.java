@@ -40,6 +40,17 @@ public class Circle implements Draw{
         this.paintColor = paintColor;
     }
 
+    public Circle(Circle circle){
+        this.x1 = circle.getX1();
+        this.x2 = circle.getX2();
+        this.y1 = circle.getY1();
+        this.y2 = circle.getY2();
+        this.bold = circle.getBold();
+        this.boldColor = circle.getBoldColor();
+        this.isPaint = circle.getIsPaint();
+        this.paintColor = circle.getPaintColor();
+    }
+
     @Override
     public boolean updateDraw(Draw editDraw, String sessionId){
         Circle circle = (Circle) editDraw;
