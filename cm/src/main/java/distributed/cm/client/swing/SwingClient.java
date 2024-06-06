@@ -313,8 +313,10 @@ public class SwingClient {
             super.paintComponent(g);
 
             if(shapes.size() != 0) {
-                for (SwingShape shape : shapes) {
-                    shape.draw(g);
+                synchronized (shapes){
+                    for (SwingShape shape : shapes) {
+                        shape.draw(g);
+                    }
                 }
             }
 
