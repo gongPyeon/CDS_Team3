@@ -10,8 +10,8 @@ import java.util.*;
 @Repository
 public class DrawRepository {
 
-    private final Map<Point, Draw> drawStores = Collections.synchronizedMap(new LinkedHashMap<>());
-    private final Map<Point, Draw> formerStores  = Collections.synchronizedMap(new LinkedHashMap<>());
+    private Map<Point, Draw> drawStores = Collections.synchronizedMap(new LinkedHashMap<>());
+    private Map<Point, Draw> formerStores  = Collections.synchronizedMap(new LinkedHashMap<>());
 
     public void saveDraw(Draw draw) {
         Point point = new Point(draw.getX1(), draw.getY1());
@@ -68,7 +68,10 @@ public class DrawRepository {
     }
 
     public List<Draw> findFormalAll() {
-        return formerStores.values().stream().toList();
+        drawStores.clear();
+        drawStores = formerStores;
+        formerStores = Collections.synchronizedMap(new LinkedHashMap<>());
+        return drawStores.values().stream().toList();
     }
 
     public void clearAll(){
